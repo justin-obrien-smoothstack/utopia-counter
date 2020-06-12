@@ -14,14 +14,11 @@ import javax.persistence.Table;
 @Table(name = "tbl_airport")
 public class Airport implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6970945597564002398L;
+	private static final long serialVersionUID = 5424938813745219349L;
 
 	@Id
 	@Column
-	private int airportId;
+	private Long airportId;
 
 	@Column
 	private String name;
@@ -43,7 +40,7 @@ public class Airport implements Serializable {
 	/**
 	 * @return the airportId
 	 */
-	public int getAirportId() {
+	public Long getAirportId() {
 		return airportId;
 	}
 
@@ -51,7 +48,7 @@ public class Airport implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + airportId;
+		result = prime * result + ((airportId == null) ? 0 : airportId.hashCode());
 		return result;
 	}
 
@@ -64,7 +61,10 @@ public class Airport implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Airport other = (Airport) obj;
-		if (airportId != other.airportId)
+		if (airportId == null) {
+			if (other.airportId != null)
+				return false;
+		} else if (!airportId.equals(other.airportId))
 			return false;
 		return true;
 	}
