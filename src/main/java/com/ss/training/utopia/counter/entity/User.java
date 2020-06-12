@@ -3,11 +3,15 @@ package com.ss.training.utopia.counter.entity;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Justin O'Brien
  */
+@Entity
+@Table(name = "tbl_user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -1093118640730467189L;
