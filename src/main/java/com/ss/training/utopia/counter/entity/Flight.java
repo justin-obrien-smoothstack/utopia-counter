@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 /**
  * @author Justin O'Brien
  */
+@Entity
 @Table(name = "tbl_flight")
 @IdClass(FlightPk.class)
 public class Flight implements Serializable {
