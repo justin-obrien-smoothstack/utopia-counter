@@ -14,11 +14,11 @@ import javax.persistence.Table;
 @Table(name = "tbl_user")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = -1093118640730467189L;
+	private static final long serialVersionUID = 4242923319861796309L;
 
 	@Id
 	@Column
-	private int userId;
+	private Long userId;
 
 	@Column
 	private String name, username, password, role;
@@ -82,7 +82,7 @@ public class User implements Serializable {
 	/**
 	 * @return the userId
 	 */
-	public int getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
@@ -90,7 +90,7 @@ public class User implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + userId;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -103,7 +103,10 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (userId != other.userId)
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}
