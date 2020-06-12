@@ -1,24 +1,24 @@
 package com.ss.training.utopia.counter.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**
  * @author Justin O'Brien
  */
 public class FlightPk implements Serializable {
 
-	private static final long serialVersionUID = 5767548512201809275L;
-	
-	private int departId, arriveId;
-	private LocalDateTime departTime;
+	private static final long serialVersionUID = 7884891349820641524L;
+
+	private Long departId, arriveId;
+	private Timestamp departTime;
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + arriveId;
-		result = prime * result + departId;
+		result = prime * result + ((arriveId == null) ? 0 : arriveId.hashCode());
+		result = prime * result + ((departId == null) ? 0 : departId.hashCode());
 		result = prime * result + ((departTime == null) ? 0 : departTime.hashCode());
 		return result;
 	}
@@ -32,9 +32,15 @@ public class FlightPk implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		FlightPk other = (FlightPk) obj;
-		if (arriveId != other.arriveId)
+		if (arriveId == null) {
+			if (other.arriveId != null)
+				return false;
+		} else if (!arriveId.equals(other.arriveId))
 			return false;
-		if (departId != other.departId)
+		if (departId == null) {
+			if (other.departId != null)
+				return false;
+		} else if (!departId.equals(other.departId))
 			return false;
 		if (departTime == null) {
 			if (other.departTime != null)

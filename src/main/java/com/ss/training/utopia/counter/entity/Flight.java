@@ -1,7 +1,7 @@
 package com.ss.training.utopia.counter.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,75 +17,78 @@ import javax.persistence.Table;
 @IdClass(FlightPk.class)
 public class Flight implements Serializable {
 
-	private static final long serialVersionUID = -8418526716923540697L;
+	private static final long serialVersionUID = -9104220295315031366L;
 
 	@Id
 	@Column
-	private int departId, arriveId;
+	private Long departId, arriveId;
 
 	@Id
 	@Column
-	private LocalDateTime departTime;
+	private Timestamp departTime;
 
 	@Column
-	private int flightId, seatsAvailable;
+	private Long flightId;
 
 	@Column
-	private double price;
+	private Short seatsAvailable;
+
+	@Column
+	private Float price;
 
 	/**
 	 * @return the seatsAvailable
 	 */
-	public int getSeatsAvailable() {
+	public Short getSeatsAvailable() {
 		return seatsAvailable;
 	}
 
 	/**
 	 * @param seatsAvailable the seatsAvailable to set
 	 */
-	public void setSeatsAvailable(int seatsAvailable) {
+	public void setSeatsAvailable(Short seatsAvailable) {
 		this.seatsAvailable = seatsAvailable;
 	}
 
 	/**
 	 * @return the price
 	 */
-	public double getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(double price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
 	/**
 	 * @return the departId
 	 */
-	public int getDepartId() {
+	public Long getDepartId() {
 		return departId;
 	}
 
 	/**
 	 * @return the arriveId
 	 */
-	public int getArriveId() {
+	public Long getArriveId() {
 		return arriveId;
 	}
 
 	/**
 	 * @return the departTime
 	 */
-	public LocalDateTime getDepartTime() {
+	public Timestamp getDepartTime() {
 		return departTime;
 	}
 
 	/**
 	 * @return the flightId
 	 */
-	public int getFlightId() {
+	public Long getFlightId() {
 		return flightId;
 	}
 
@@ -93,8 +96,8 @@ public class Flight implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + arriveId;
-		result = prime * result + departId;
+		result = prime * result + ((arriveId == null) ? 0 : arriveId.hashCode());
+		result = prime * result + ((departId == null) ? 0 : departId.hashCode());
 		result = prime * result + ((departTime == null) ? 0 : departTime.hashCode());
 		return result;
 	}
@@ -108,9 +111,15 @@ public class Flight implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Flight other = (Flight) obj;
-		if (arriveId != other.arriveId)
+		if (arriveId == null) {
+			if (other.arriveId != null)
+				return false;
+		} else if (!arriveId.equals(other.arriveId))
 			return false;
-		if (departId != other.departId)
+		if (departId == null) {
+			if (other.departId != null)
+				return false;
+		} else if (!departId.equals(other.departId))
 			return false;
 		if (departTime == null) {
 			if (other.departTime != null)
