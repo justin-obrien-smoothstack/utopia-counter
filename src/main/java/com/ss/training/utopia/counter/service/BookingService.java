@@ -10,6 +10,7 @@ import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Airport;
+import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
 
 /**
@@ -53,6 +54,16 @@ public class BookingService {
 			return null;
 		}
 		return airports.toArray(new Airport[airports.size()]);
+	}
+
+	public Flight[] getBookableFlights(Integer departId, Integer arriveId, Integer travelerId) {
+		List<Flight> flights;
+		try {
+			flights = flightDao.findBookable(departId, arriveId, travelerId);
+		} catch (Throwable t) {
+			return null;
+		}
+		return flights.toArray(new Flight[flights.size()]);
 	}
 
 }
