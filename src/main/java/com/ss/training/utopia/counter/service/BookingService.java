@@ -1,5 +1,7 @@
 package com.ss.training.utopia.counter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +9,7 @@ import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
+import com.ss.training.utopia.counter.entity.Airport;
 import com.ss.training.utopia.counter.entity.User;
 
 /**
@@ -40,6 +43,16 @@ public class BookingService {
 			return null;
 		}
 		return ("TRAVELER".equals(user.getRole()));
+	}
+
+	public Airport[] getAllAirports() {
+		List<Airport> airports;
+		try {
+			airports = airportDao.findAll();
+		} catch (Throwable t) {
+			return null;
+		}
+		return airports.toArray(new Airport[airports.size()]);
 	}
 
 }
