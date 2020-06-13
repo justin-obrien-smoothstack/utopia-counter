@@ -1,0 +1,24 @@
+package com.ss.training.utopia.counter.dao;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.ss.training.utopia.counter.entity.Flight;
+import com.ss.training.utopia.counter.entity.FlightPk;
+
+/**
+ * @author Justin O'Brien
+ */
+@Repository
+public interface FlightDao extends JpaRepository<Flight, FlightPk> {
+
+	@Query("SELECT f FROM tbl_flight f WHERE f.departId = ?1 AND f.arriveId = ?2 AND f.departTime > CURRENT_TIMESTAMP "
+			+ "AND f.flightId NOT IN (SELECT b.flightId FROM tbl_booking WHERE b.travelerId = ?3 AND b.active = 1)")
+	public List<Flight> findBookable(Integer departId, Integer arriveId, Integer travelerId);
+
+	public Flight findByFlightId(Long flightId);
+
+}
