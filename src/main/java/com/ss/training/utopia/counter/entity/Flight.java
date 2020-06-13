@@ -27,7 +27,7 @@ public class Flight implements Serializable {
 	@Column
 	private Timestamp departTime;
 
-	@Column
+	@Column(unique = true)
 	private Long flightId;
 
 	@Column
