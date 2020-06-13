@@ -32,4 +32,14 @@ public class BookingService {
 		}
 	}
 
+	public Boolean isUserTraveler(Long userId) {
+		User user;
+		try {
+			user = userDao.findById(userId).orElseGet(null);
+		} catch (Throwable t) {
+			return null;
+		}
+		return ("TRAVELER".equals(user.getRole()));
+	}
+
 }
