@@ -20,8 +20,11 @@ public class User implements Serializable {
 	@Column
 	private Long userId;
 
+	@Column(unique = true)
+	private String username;
+
 	@Column
-	private String name, username, password, role;
+	private String name, password, role;
 
 	/**
 	 * @return the name
