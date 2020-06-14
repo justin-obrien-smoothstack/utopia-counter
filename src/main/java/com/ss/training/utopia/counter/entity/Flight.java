@@ -37,6 +37,30 @@ public class Flight implements Serializable {
 	private Float price;
 
 	/**
+	 * 
+	 */
+	public Flight() {
+	}
+
+	/**
+	 * @param departId
+	 * @param arriveId
+	 * @param departTime
+	 * @param flightId
+	 * @param seatsAvailable
+	 * @param price
+	 */
+	public Flight(Long departId, Long arriveId, Timestamp departTime, Long flightId, Short seatsAvailable,
+			Float price) {
+		this.departId = departId;
+		this.arriveId = arriveId;
+		this.departTime = departTime;
+		this.flightId = flightId;
+		this.seatsAvailable = seatsAvailable;
+		this.price = price;
+	}
+
+	/**
 	 * @return the seatsAvailable
 	 */
 	public Short getSeatsAvailable() {
