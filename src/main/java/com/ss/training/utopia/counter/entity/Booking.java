@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @IdClass(BookingPk.class)
 public class Booking implements Serializable {
 
-	private static final long serialVersionUID = -477775771212358896L;
+	private static final long serialVersionUID = -3688288514632867852L;
 
 	@Id
 	@Column
@@ -30,6 +30,14 @@ public class Booking implements Serializable {
 
 	@Column
 	private String stripeId;
+
+	public Booking(Long travelerId, Long flightId, Long bookerId, String stripeId) {
+		this.travelerId = travelerId;
+		this.flightId = flightId;
+		this.bookerId = bookerId;
+		this.stripeId = stripeId;
+		this.active = true;
+	}
 
 	/**
 	 * @return the active
