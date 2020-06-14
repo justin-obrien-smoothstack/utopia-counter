@@ -27,6 +27,27 @@ public class User implements Serializable {
 	private String name, password, role;
 
 	/**
+	 * @param userId
+	 * @param username
+	 * @param name
+	 * @param password
+	 * @param role
+	 */
+	public User(Long userId, String username, String name, String password, String role) {
+		this.userId = userId;
+		this.username = username;
+		this.name = name;
+		this.password = password;
+		this.role = role;
+	}
+
+	/**
+	 * 
+	 */
+	public User() {
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {
