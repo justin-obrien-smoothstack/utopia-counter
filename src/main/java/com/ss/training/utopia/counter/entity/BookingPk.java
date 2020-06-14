@@ -11,6 +11,21 @@ public class BookingPk implements Serializable {
 
 	private Long travelerId, flightId;
 
+	/**
+	 * 
+	 */
+	public BookingPk() {
+	}
+
+	/**
+	 * @param travelerId
+	 * @param flightId
+	 */
+	public BookingPk(Long travelerId, Long flightId) {
+		this.travelerId = travelerId;
+		this.flightId = flightId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
