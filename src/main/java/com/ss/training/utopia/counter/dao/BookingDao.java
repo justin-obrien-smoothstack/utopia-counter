@@ -13,7 +13,7 @@ import com.ss.training.utopia.counter.entity.BookingPk;
  */
 public interface BookingDao extends JpaRepository<Booking, BookingPk> {
 
-	@Query("SELECT b FROM tbl_booking b JOIN tbl_flight f WHERE b.travelerId = ?1 AND b.active = ?2 AND f.departTime > CURRENT_TIMESTAMP")
-	public List<Booking> findCancellable(Integer travelerId, Boolean active);
+	@Query("SELECT b FROM tbl_booking b JOIN tbl_flight f WHERE b.travelerId = ?1 AND b.active = true AND f.departTime > CURRENT_TIMESTAMP")
+	public List<Booking> findCancellable(Integer travelerId);
 
 }
