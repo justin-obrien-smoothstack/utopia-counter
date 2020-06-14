@@ -17,7 +17,7 @@ public interface FlightDao extends JpaRepository<Flight, FlightPk> {
 
 	@Query("SELECT f FROM Flight f WHERE f.departId = ?1 AND f.arriveId = ?2 "
 			+ "AND f.departTime > CURRENT_TIMESTAMP AND f.seatsAvailable > 0 "
-			+ "AND f.flightId NOT IN (SELECT b.flightId FROM Booking WHERE b.travelerId = ?3 AND b.active = true)")
+			+ "AND f.flightId NOT IN (SELECT b.flightId FROM Booking b WHERE b.travelerId = ?3 AND b.active = true)")
 	public List<Flight> findBookable(Long departId, Long arriveId, Long travelerId);
 
 	public Flight findByFlightId(Long flightId);
