@@ -26,10 +26,11 @@ public class UserDaoTests {
 	@Test
 	public void findByUsernameTest() {
 		String testUsername = "TestUsername";
-		User testUser = new User(null, testUsername, null, null, null);
-		testEntityManager.persist(testUser);
+		User savedUser = new User(null, testUsername, null, null, null), foundUser;
+		testEntityManager.persist(savedUser);
 		testEntityManager.flush();
-		assertEquals(testUser, userDao.findByUsername(testUsername));
+		foundUser = userDao.findByUsername(testUsername);
+		assertEquals(savedUser, foundUser);
 	}
 
 }
