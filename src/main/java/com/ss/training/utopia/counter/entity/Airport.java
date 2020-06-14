@@ -24,6 +24,21 @@ public class Airport implements Serializable {
 	private String name;
 
 	/**
+	 * 
+	 */
+	public Airport() {
+	}
+
+	/**
+	 * @param airportId
+	 * @param name
+	 */
+	public Airport(Long airportId, String name) {
+		this.airportId = airportId;
+		this.name = name;
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {
