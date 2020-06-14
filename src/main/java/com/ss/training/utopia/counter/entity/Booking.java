@@ -32,6 +32,27 @@ public class Booking implements Serializable {
 	private String stripeId;
 
 	/**
+	 * 
+	 */
+	public Booking() {
+	}
+
+	/**
+	 * @param travelerId
+	 * @param flightId
+	 * @param bookerId
+	 * @param active
+	 * @param stripeId
+	 */
+	public Booking(Long travelerId, Long flightId, Long bookerId, Boolean active, String stripeId) {
+		this.travelerId = travelerId;
+		this.flightId = flightId;
+		this.bookerId = bookerId;
+		this.active = active;
+		this.stripeId = stripeId;
+	}
+
+	/**
 	 * @return the active
 	 */
 	public Boolean getActive() {
