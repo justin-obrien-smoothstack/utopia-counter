@@ -69,15 +69,23 @@ public class BookingService {
 	}
 
 	@Transactional
-	public Boolean bookFlight(User traveler, Flight flight, User booker) {
-		String stripeId = null; // need to take payment via Stripe
-		Booking booking = new Booking(traveler.getUserId(), flight.getFlightId(), booker.getUserId(), stripeId);
+	public Boolean bookFlight(Booking booking) {
+		Flight flight;
+		try {
+			flight = flightDao.findByFlightId(booking.getFlightId());
+		} catch (Throwable t) {
+			return null;
+		}
+		if (flight.getSeatsAvailable() <= 0)
+			return false;
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
+		// take payment & set stripeId
 		try {
 			bookingDao.save(booking);
 			flightDao.save(flight);
 		} catch (Throwable t) {
-			return false;
+			// cancel payment
+			return null;
 		}
 		return true;
 	}
