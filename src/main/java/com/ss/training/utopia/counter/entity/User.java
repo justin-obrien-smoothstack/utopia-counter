@@ -27,6 +27,12 @@ public class User implements Serializable {
 	private String name, password, role;
 
 	/**
+	 * 
+	 */
+	public User() {
+	}
+
+	/**
 	 * @param userId
 	 * @param username
 	 * @param name
@@ -39,12 +45,6 @@ public class User implements Serializable {
 		this.name = name;
 		this.password = password;
 		this.role = role;
-	}
-
-	/**
-	 * 
-	 */
-	public User() {
 	}
 
 	/**
