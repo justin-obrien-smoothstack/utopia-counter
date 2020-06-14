@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Airport;
+import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
 
@@ -64,6 +66,20 @@ public class BookingService {
 			return null;
 		}
 		return flights.toArray(new Flight[flights.size()]);
+	}
+
+	@Transactional
+	public Boolean bookFlight(User traveler, Flight flight, User booker) {
+		String stripeId = null; // need to take payment via Stripe
+		Booking booking = new Booking(traveler.getUserId(), flight.getFlightId(), booker.getUserId(), stripeId);
+		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
+		try {
+			bookingDao.save(booking);
+			flightDao.save(flight);
+		} catch (Throwable t) {
+			return false;
+		}
+		return true;
 	}
 
 }
