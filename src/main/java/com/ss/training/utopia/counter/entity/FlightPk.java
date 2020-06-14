@@ -13,6 +13,23 @@ public class FlightPk implements Serializable {
 	private Long departId, arriveId;
 	private Timestamp departTime;
 
+	/**
+	 * 
+	 */
+	public FlightPk() {
+	}
+
+	/**
+	 * @param departId
+	 * @param arriveId
+	 * @param departTime
+	 */
+	public FlightPk(Long departId, Long arriveId, Timestamp departTime) {
+		this.departId = departId;
+		this.arriveId = arriveId;
+		this.departTime = departTime;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
