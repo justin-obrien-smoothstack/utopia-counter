@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class FlightDaoTests {
 	private TestEntityManager testEntityManager;
 	@Autowired
 	private FlightDao flightDao;
+
+	@After
+	public void after() {
+		testEntityManager.clear();
+	}
 
 	@Test
 	public void findBookableTest() {
@@ -72,6 +78,17 @@ public class FlightDaoTests {
 		testEntityManager.flush();
 		actualBookableFlights = new HashSet<Flight>(flightDao.findBookable(thisDepartId, thisArriveId, thisTravelerId));
 		assertEquals(expectedBookableFlights, actualBookableFlights);
+	}
+
+	@Test
+	public void findByFlightIdTest() {
+		Long thisFlightId = (long) 1, otherFlightId = (long) 2;
+		Timestamp timestamp = new Timestamp(Instant.now().toEpochMilli());
+		Flight thisFlight = new Flight((long) 1, (long) 2, timestamp, thisFlightId, (short) 0, null),
+				otherFlight = new Flight((long) 2, (long) 1, timestamp, otherFlightId, (short) 0, null);
+		testEntityManager.persist(thisFlight);
+		testEntityManager.persist(otherFlight);
+		assertEquals(thisFlight, flightDao.findByFlightId(thisFlightId));
 	}
 
 }
