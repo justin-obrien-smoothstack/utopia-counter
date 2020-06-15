@@ -60,7 +60,7 @@ public class BookingService {
 		return airports.toArray(new Airport[airports.size()]);
 	}
 
-	public Flight[] getBookableFlights(Integer departId, Integer arriveId, Integer travelerId) {
+	public Flight[] getBookableFlights(Long departId, Long arriveId, Long travelerId) {
 		List<Flight> flights;
 		try {
 			flights = flightDao.findBookable(departId, arriveId, travelerId);
