@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class FlightDaoTests {
 	@Autowired
 	private FlightDao flightDao;
 
-	@After
+	@AfterEach
 	public void after() {
 		testEntityManager.clear();
 	}
