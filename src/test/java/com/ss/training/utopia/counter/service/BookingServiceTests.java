@@ -1,36 +1,46 @@
-package com.ss.training.utopia.test.counter.service;
+package com.ss.training.utopia.counter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.User;
-import com.ss.training.utopia.counter.service.BookingService;
 
 /**
  * @author Justin O'Brien
  */
-@SpringBootTest
-public class BookingServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class BookingServiceTests {
 
 	@Mock
 	private UserDao userDao;
-
 	@InjectMocks
 	private BookingService bookingService;
 
+	@BeforeEach
+	private void before() {
+		MockitoAnnotations.initMocks(this);
+	}
+
 	@Test
 	public void createUserTest() {
-		Long mockUserId = (long) 1;
-		User mockNewUser = new User(), mockSavedUser = new User();
-		Mockito.when(mockSavedUser.getUserId()).thenReturn(mockUserId);
-		Mockito.when(userDao.save(mockNewUser)).thenReturn(mockSavedUser);
-		assertEquals(mockUserId, bookingService.createUser(mockNewUser));
+		Long userId = 1l;
+		String password = "password";
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		User newUser = new User(null, null, null, password, null), savedUser = new User(userId, null, null, null, null);
+		Mockito.when(userDao.save(newUser)).thenReturn(savedUser);
+		assertEquals(userId, bookingService.createUser(newUser));
+		assertTrue(encoder.matches(password, newUser.getPassword()));
 	}
 
 }
