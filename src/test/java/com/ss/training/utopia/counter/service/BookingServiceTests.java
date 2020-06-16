@@ -1,6 +1,6 @@
 package com.ss.training.utopia.counter.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,13 +34,13 @@ public class BookingServiceTests {
 
 	@Test
 	public void createUserTest() {
-		Long userId = 1l;
 		String password = "password";
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		User newUser = new User(null, null, null, password, null), savedUser = new User(userId, null, null, null, null);
-		Mockito.when(userDao.save(newUser)).thenReturn(savedUser);
-		assertEquals(userId, bookingService.createUser(newUser));
-		assertTrue(encoder.matches(password, newUser.getPassword()));
+		User user = new User(null, null, null, password, null);
+		Mockito.when(userDao.save(user)).thenReturn(null);
+		assertTrue(bookingService.createUser(user));
+		assertTrue(new BCryptPasswordEncoder().matches(password, user.getPassword()));
+		Mockito.when(userDao.save(user)).thenThrow();
+		assertNull(bookingService.createUser(user));
 	}
 
 }
