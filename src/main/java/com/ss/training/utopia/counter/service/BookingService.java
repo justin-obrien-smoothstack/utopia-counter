@@ -31,13 +31,14 @@ public class BookingService {
 	@Autowired
 	BookingDao bookingDao;
 
-	public Long createUser(User user) {
+	public Boolean createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		try {
-			return userDao.save(user).getUserId();
+			userDao.save(user);
 		} catch (Throwable t) {
 			return null;
 		}
+		return true;
 	}
 
 	public Boolean isUserTraveler(Long userId) {
