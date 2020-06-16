@@ -64,6 +64,8 @@ public class BookingServiceTests {
 		assertTrue(bookingService.userIsTraveler(username));
 		Mockito.when(userDao.findByUsername(username)).thenReturn(nonTraveler);
 		assertFalse(bookingService.userIsTraveler(username));
+		Mockito.when(userDao.findByUsername(username)).thenReturn(null);
+		assertFalse(bookingService.userIsTraveler(username));
 		Mockito.when(userDao.findByUsername(username)).thenThrow();
 		assertNull(bookingService.userIsTraveler(username));
 	}
