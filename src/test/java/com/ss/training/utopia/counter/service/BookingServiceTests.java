@@ -1,8 +1,13 @@
 package com.ss.training.utopia.counter.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.UserDao;
+import com.ss.training.utopia.counter.entity.Airport;
 import com.ss.training.utopia.counter.entity.User;
 
 /**
@@ -25,6 +32,8 @@ public class BookingServiceTests {
 
 	@Mock
 	private UserDao userDao;
+	@Mock
+	private AirportDao airportDao;
 	@InjectMocks
 	private BookingService bookingService;
 
@@ -68,6 +77,17 @@ public class BookingServiceTests {
 		assertFalse(bookingService.userIsTraveler(username));
 		Mockito.when(userDao.findByUsername(username)).thenThrow();
 		assertNull(bookingService.userIsTraveler(username));
+	}
+
+	@Test
+	public void getAllAirportsTest() {
+		Airport[] airportArray = { new Airport() };
+		List<Airport> airportList = new ArrayList<Airport>();
+		airportList.add(new Airport());
+		Mockito.when(airportDao.findAll()).thenReturn(airportList);
+		assertTrue(Arrays.equals(airportArray, bookingService.getAllAirports()));
+		Mockito.when(airportDao.findAll()).thenThrow();
+		assertNull(bookingService.getAllAirports());
 	}
 
 }
