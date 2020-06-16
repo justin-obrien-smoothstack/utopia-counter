@@ -21,7 +21,6 @@ import com.ss.training.utopia.counter.entity.Flight;
 /**
  * @author Justin O'Brien
  */
-@RunWith(SpringRunner.class)
 @DataJpaTest
 public class FlightDaoTests {
 
