@@ -41,6 +41,16 @@ public class BookingService {
 		return true;
 	}
 
+	public Boolean usernameAvailable(String username) {
+		User user;
+		try {
+			user = userDao.findByUsername(username);
+		} catch (Throwable t) {
+			return null;
+		}
+		return user == null;
+	}
+
 	public Boolean userIsTraveler(Long userId) {
 		User user;
 		try {
