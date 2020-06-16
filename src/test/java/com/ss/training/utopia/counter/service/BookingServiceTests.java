@@ -56,9 +56,8 @@ public class BookingServiceTests {
 	@Test
 	public void usernameAvailableTest() {
 		String username = "Username";
-		Mockito.when(userDao.findByUsername(username)).thenReturn(null);
+		Mockito.when(userDao.findByUsername(username)).thenReturn(null, new User());
 		assertTrue(bookingService.usernameAvailable(username));
-		Mockito.when(userDao.findByUsername(username)).thenReturn(new User());
 		assertFalse(bookingService.usernameAvailable(username));
 		Mockito.when(userDao.findByUsername(username)).thenThrow();
 		assertNull(bookingService.usernameAvailable(username));
@@ -69,11 +68,9 @@ public class BookingServiceTests {
 		String username = "Username";
 		User traveler = new User(null, null, null, null, "TRAVELER"),
 				nonTraveler = new User(null, null, null, null, "COUNTER");
-		Mockito.when(userDao.findByUsername(username)).thenReturn(traveler);
+		Mockito.when(userDao.findByUsername(username)).thenReturn(traveler, nonTraveler, null);
 		assertTrue(bookingService.userIsTraveler(username));
-		Mockito.when(userDao.findByUsername(username)).thenReturn(nonTraveler);
 		assertFalse(bookingService.userIsTraveler(username));
-		Mockito.when(userDao.findByUsername(username)).thenReturn(null);
 		assertFalse(bookingService.userIsTraveler(username));
 		Mockito.when(userDao.findByUsername(username)).thenThrow();
 		assertNull(bookingService.userIsTraveler(username));
