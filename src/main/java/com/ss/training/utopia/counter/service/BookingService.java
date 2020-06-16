@@ -41,7 +41,7 @@ public class BookingService {
 		return true;
 	}
 
-	public Boolean isUserTraveler(Long userId) {
+	public Boolean userIsTraveler(Long userId) {
 		User user;
 		try {
 			user = userDao.findById(userId).orElseGet(null);
