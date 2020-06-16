@@ -28,12 +28,12 @@ public class BookingDaoTests {
 	@Test
 	public void findCancellableTest() {
 		final Long HOUR = 3_600_000l;
-		Long thisTravelerId = 1l, otherTravelerId =  2l, futureFlightId =  1l, pastFlightId =  2l,
-				otherFutureFlightId =  3l, now = Instant.now().toEpochMilli();
+		Long thisTravelerId = 1l, otherTravelerId = 2l, futureFlightId = 1l, pastFlightId = 2l,
+				otherFutureFlightId = 3l, now = Instant.now().toEpochMilli();
 		Timestamp past = new Timestamp(now - HOUR), future = new Timestamp(now + HOUR);
-		Flight futureFlight = new Flight( 1l,  2l, future, futureFlightId, null, null),
-				pastFlight = new Flight( 1l,  2l, past, pastFlightId, null, null),
-				otherFutureFlight = new Flight( 2l,  1l, future, otherFutureFlightId, null, null);
+		Flight futureFlight = new Flight(1l, 2l, future, futureFlightId, null, null),
+				pastFlight = new Flight(1l, 2l, past, pastFlightId, null, null),
+				otherFutureFlight = new Flight(2l, 1l, future, otherFutureFlightId, null, null);
 		Booking cancellableBooking = new Booking(thisTravelerId, futureFlightId, null, true, null),
 				otherTravelerBooking = new Booking(otherTravelerId, futureFlightId, null, true, null),
 				pastFlightBooking = new Booking(thisTravelerId, pastFlightId, null, true, null),
