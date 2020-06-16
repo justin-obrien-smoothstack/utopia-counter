@@ -51,14 +51,14 @@ public class BookingService {
 		return user == null;
 	}
 
-	public Boolean userIsTraveler(Long userId) {
+	public Boolean userIsTraveler(String username) {
 		User user;
 		try {
-			user = userDao.findById(userId).orElseGet(null);
+			user = userDao.findByUsername(username);
 		} catch (Throwable t) {
 			return null;
 		}
-		return ("TRAVELER".equals(user.getRole()));
+		return (user != null && "TRAVELER".equals(user.getRole()));
 	}
 
 	public Airport[] getAllAirports() {
