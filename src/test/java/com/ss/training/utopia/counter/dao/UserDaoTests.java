@@ -14,7 +14,6 @@ import com.ss.training.utopia.counter.entity.User;
 /**
  * @author Justin O'Brien
  */
-@RunWith(SpringRunner.class)
 @DataJpaTest
 public class UserDaoTests {
 
