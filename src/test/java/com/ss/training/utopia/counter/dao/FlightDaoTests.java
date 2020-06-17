@@ -1,6 +1,7 @@
 package com.ss.training.utopia.counter.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -82,13 +83,14 @@ public class FlightDaoTests {
 
 	@Test
 	public void findByFlightIdTest() {
-		Long thisFlightId = 1l, otherFlightId = 2l;
+		Long thisFlightId = 1l, otherFlightId = 2l, notAFlightId = 3l;
 		Timestamp timestamp = new Timestamp(Instant.now().toEpochMilli());
 		Flight thisFlight = new Flight(1l, 2l, timestamp, thisFlightId, (short) 0, null),
 				otherFlight = new Flight(2l, 1l, timestamp, otherFlightId, (short) 0, null);
 		testEntityManager.persist(thisFlight);
 		testEntityManager.persist(otherFlight);
 		assertEquals(thisFlight, flightDao.findByFlightId(thisFlightId));
+		assertNull(flightDao.findByFlightId(notAFlightId));
 	}
 
 	@Test
