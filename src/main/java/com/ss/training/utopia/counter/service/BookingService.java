@@ -51,16 +51,6 @@ public class BookingService {
 		return user == null;
 	}
 
-	public Boolean userIsTraveler(String username) {
-		User user;
-		try {
-			user = userDao.findByUsername(username);
-		} catch (Throwable t) {
-			return null;
-		}
-		return (user != null && "TRAVELER".equals(user.getRole()));
-	}
-
 	public Airport[] getAllAirports() {
 		List<Airport> airports;
 		try {

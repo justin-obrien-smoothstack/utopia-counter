@@ -72,19 +72,6 @@ public class BookingServiceTests {
 	}
 
 	@Test
-	public void userIsTravelerTest() {
-		String username = "Username";
-		User traveler = new User(null, null, null, null, "TRAVELER"),
-				nonTraveler = new User(null, null, null, null, "COUNTER");
-		Mockito.when(userDao.findByUsername(username)).thenReturn(traveler, nonTraveler, null);
-		assertTrue(bookingService.userIsTraveler(username));
-		assertFalse(bookingService.userIsTraveler(username));
-		assertFalse(bookingService.userIsTraveler(username));
-		Mockito.when(userDao.findByUsername(username)).thenThrow(new RuntimeException());
-		assertNull(bookingService.userIsTraveler(username));
-	}
-
-	@Test
 	public void getAllAirportsTest() {
 		Airport[] airportArray = { new Airport() };
 		List<Airport> airportList = new ArrayList<Airport>();
