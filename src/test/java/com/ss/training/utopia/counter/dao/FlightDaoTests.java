@@ -59,9 +59,9 @@ public class FlightDaoTests {
 				otherTravelerBookingOne = new Booking(otherTravelerId, unbookedFlightId, null, true, null),
 				otherTravelerBookingTwo = new Booking(otherTravelerId, inactiveBookedFlightId, null, true, null),
 				activeBooking = new Booking(thisTravelerId, activeBookedFlightId, null, true, null);
-		Set<Flight> expectedBookableFlights = new HashSet<Flight>(), actualBookableFlights;
-		expectedBookableFlights.add(unbookedFlight);
-		expectedBookableFlights.add(inactiveBookedFlight);
+		Set<Flight> expectedFlights = new HashSet<Flight>(),
+				actualFlights = new HashSet<Flight>(flightDao.findBookable(thisDepartId, thisArriveId, thisTravelerId));
+		assertEquals(expectedFlights, actualFlights);
 		testEntityManager.persist(unbookedFlight);
 		testEntityManager.persist(inactiveBookedFlight);
 		testEntityManager.persist(wrongDepartFlight);
@@ -74,8 +74,10 @@ public class FlightDaoTests {
 		testEntityManager.persist(otherTravelerBookingTwo);
 		testEntityManager.persist(activeBooking);
 		testEntityManager.flush();
-		actualBookableFlights = new HashSet<Flight>(flightDao.findBookable(thisDepartId, thisArriveId, thisTravelerId));
-		assertEquals(expectedBookableFlights, actualBookableFlights);
+		expectedFlights.add(unbookedFlight);
+		expectedFlights.add(inactiveBookedFlight);
+		actualFlights = new HashSet<Flight>(flightDao.findBookable(thisDepartId, thisArriveId, thisTravelerId));
+		assertEquals(expectedFlights, actualFlights);
 	}
 
 	@Test
@@ -88,7 +90,7 @@ public class FlightDaoTests {
 		testEntityManager.persist(otherFlight);
 		assertEquals(thisFlight, flightDao.findByFlightId(thisFlightId));
 	}
-	
+
 	@Test
 	public void findCancellablyBookedTest() {
 		final Long HOUR = 3_600_000l;
@@ -102,8 +104,8 @@ public class FlightDaoTests {
 				otherTravelerBooking = new Booking(otherTravelerId, futureFlightId, null, true, null),
 				pastFlightBooking = new Booking(thisTravelerId, pastFlightId, null, true, null),
 				inactiveBooking = new Booking(thisTravelerId, otherFutureFlightId, null, false, null);
-		List<Flight> expectedFlights = new ArrayList<Flight>(), foundFlights;
-		expectedFlights.add(cancellablyBookedFlight);
+		List<Flight> expectedFlights = new ArrayList<Flight>(), actualFlights = flightDao.findCancellablyBooked(thisTravelerId);
+		assertEquals(expectedFlights, actualFlights);
 		testEntityManager.persist(cancellablyBookedFlight);
 		testEntityManager.persist(pastFlight);
 		testEntityManager.persist(unbookedByThisTravelerFlight);
@@ -112,8 +114,9 @@ public class FlightDaoTests {
 		testEntityManager.persist(pastFlightBooking);
 		testEntityManager.persist(inactiveBooking);
 		testEntityManager.flush();
-		foundFlights = flightDao.findCancellablyBooked(thisTravelerId);
-		assertEquals(expectedFlights, foundFlights);
+		expectedFlights.add(cancellablyBookedFlight);
+		actualFlights = flightDao.findCancellablyBooked(thisTravelerId);
+		assertEquals(expectedFlights, actualFlights);
 	}
 
 }
