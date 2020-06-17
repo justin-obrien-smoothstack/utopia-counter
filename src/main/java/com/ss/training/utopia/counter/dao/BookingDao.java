@@ -11,5 +11,4 @@ import com.ss.training.utopia.counter.entity.BookingPk;
  */
 @Repository
 public interface BookingDao extends JpaRepository<Booking, BookingPk> {
-
 }
