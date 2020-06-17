@@ -22,5 +22,13 @@ public class UserService {
 		}
 		return (user != null && "TRAVELER".equals(user.getRole()));
 	}
+	
+	public User getUser(String username) {
+		try {
+			return userDao.findByUsername(username);
+		} catch (Throwable t) {
+			return null;
+		}
+	}
 
 }
