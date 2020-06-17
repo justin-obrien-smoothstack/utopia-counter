@@ -52,7 +52,7 @@ public class BookingServiceTests {
 		Mockito.when(userDao.save(user)).thenReturn(null);
 		assertTrue(bookingService.createUser(user));
 		assertTrue(new BCryptPasswordEncoder().matches(password, user.getPassword()));
-		Mockito.when(userDao.save(user)).thenThrow();
+		Mockito.when(userDao.save(user)).thenThrow(new RuntimeException());
 		assertNull(bookingService.createUser(user));
 	}
 
@@ -62,7 +62,7 @@ public class BookingServiceTests {
 		Mockito.when(userDao.findByUsername(username)).thenReturn(null, new User());
 		assertTrue(bookingService.usernameAvailable(username));
 		assertFalse(bookingService.usernameAvailable(username));
-		Mockito.when(userDao.findByUsername(username)).thenThrow();
+		Mockito.when(userDao.findByUsername(username)).thenThrow(new RuntimeException());
 		assertNull(bookingService.usernameAvailable(username));
 	}
 
@@ -75,7 +75,7 @@ public class BookingServiceTests {
 		assertTrue(bookingService.userIsTraveler(username));
 		assertFalse(bookingService.userIsTraveler(username));
 		assertFalse(bookingService.userIsTraveler(username));
-		Mockito.when(userDao.findByUsername(username)).thenThrow();
+		Mockito.when(userDao.findByUsername(username)).thenThrow(new RuntimeException());
 		assertNull(bookingService.userIsTraveler(username));
 	}
 
@@ -86,7 +86,7 @@ public class BookingServiceTests {
 		airportList.add(new Airport());
 		Mockito.when(airportDao.findAll()).thenReturn(airportList);
 		assertTrue(Arrays.equals(airportArray, bookingService.getAllAirports()));
-		Mockito.when(airportDao.findAll()).thenThrow();
+		Mockito.when(airportDao.findAll()).thenThrow(new RuntimeException());
 		assertNull(bookingService.getAllAirports());
 	}
 
@@ -97,7 +97,7 @@ public class BookingServiceTests {
 		flightList.add(new Flight());
 		Mockito.when(flightDao.findBookable(null, null, null)).thenReturn(flightList);
 		assertTrue(Arrays.equals(flightArray, bookingService.getBookableFlights(null, null, null)));
-		Mockito.when(flightDao.findBookable(null, null, null)).thenThrow();
+		Mockito.when(flightDao.findBookable(null, null, null)).thenThrow(new RuntimeException());
 		assertNull(bookingService.getBookableFlights(null, null, null));
 	}
 
