@@ -1,5 +1,6 @@
 package com.ss.training.utopia.counter.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,6 +41,15 @@ public class UserServiceTests {
 		assertFalse(userService.userIsTraveler(username));
 		Mockito.when(userDao.findByUsername(username)).thenThrow(new RuntimeException());
 		assertNull(userService.userIsTraveler(username));
+	}
+
+	@Test
+	public void getUserTest() {
+		User user = new User();
+		Mockito.when(userDao.findByUsername(null)).thenReturn(user);
+		assertEquals(user, userService.getUser(null));
+		Mockito.when(userDao.findByUsername(null)).thenThrow(new RuntimeException());
+		assertNull(userService.getUser(null));
 	}
 
 }
