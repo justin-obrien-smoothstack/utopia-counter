@@ -22,4 +22,8 @@ public interface FlightDao extends JpaRepository<Flight, FlightPk> {
 
 	public Flight findByFlightId(Long flightId);
 
+	@Query("SELECT f FROM Flight f WHERE f.departTime > CURRENT_TIMESTAMP AND f.flightId IN "
+			+ "(SELECT b.flightId FROM Booking b WHERE b.travelerId = ?1 AND b.active = true)")
+	public List<Flight> findCancellablyBooked(Long travelerId);
+
 }
