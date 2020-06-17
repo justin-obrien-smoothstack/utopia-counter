@@ -9,11 +9,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
@@ -21,7 +19,6 @@ import com.ss.training.utopia.counter.entity.Flight;
 /**
  * @author Justin O'Brien
  */
-@RunWith(SpringRunner.class)
 @DataJpaTest
 public class FlightDaoTests {
 
@@ -37,11 +34,10 @@ public class FlightDaoTests {
 
 	@Test
 	public void findBookableTest() {
-		final Long HOUR = (long) 3_600_000;
-		Long thisDepartId = (long) 1, thisArriveId = (long) 1, otherDepartId = (long) 2, otherArriveId = (long) 2,
-				thisTravelerId = (long) 1, otherTravelerId = (long) 2, unbookedFlightId = (long) 1,
-				inactiveBookedFlightId = unbookedFlightId + 1, activeBookedFlightId = inactiveBookedFlightId + 1,
-				now = Instant.now().toEpochMilli();
+		final Long HOUR = 3_600_000l;
+		Long thisDepartId = 1l, thisArriveId = 1l, otherDepartId = 2l, otherArriveId = 2l, thisTravelerId = 1l,
+				otherTravelerId = 2l, unbookedFlightId = 1l, inactiveBookedFlightId = unbookedFlightId + 1,
+				activeBookedFlightId = inactiveBookedFlightId + 1, now = Instant.now().toEpochMilli();
 		Timestamp past = new Timestamp(now - HOUR), future = new Timestamp(now + HOUR),
 				futureTwo = new Timestamp(now + 2 * HOUR), futureThree = new Timestamp(now + 3 * HOUR),
 				futureFour = new Timestamp(now + 4 * HOUR);
@@ -82,10 +78,10 @@ public class FlightDaoTests {
 
 	@Test
 	public void findByFlightIdTest() {
-		Long thisFlightId = (long) 1, otherFlightId = (long) 2;
+		Long thisFlightId = 1l, otherFlightId = 2l;
 		Timestamp timestamp = new Timestamp(Instant.now().toEpochMilli());
-		Flight thisFlight = new Flight((long) 1, (long) 2, timestamp, thisFlightId, (short) 0, null),
-				otherFlight = new Flight((long) 2, (long) 1, timestamp, otherFlightId, (short) 0, null);
+		Flight thisFlight = new Flight(1l, 2l, timestamp, thisFlightId, (short) 0, null),
+				otherFlight = new Flight(2l, 1l, timestamp, otherFlightId, (short) 0, null);
 		testEntityManager.persist(thisFlight);
 		testEntityManager.persist(otherFlight);
 		assertEquals(thisFlight, flightDao.findByFlightId(thisFlightId));
