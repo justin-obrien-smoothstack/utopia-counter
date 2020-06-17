@@ -55,7 +55,7 @@ public class Booking implements Serializable {
 	/**
 	 * @return the active
 	 */
-	public Boolean getActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
