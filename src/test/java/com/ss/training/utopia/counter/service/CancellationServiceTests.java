@@ -47,8 +47,6 @@ public class CancellationServiceTests {
 		List<Flight> flights = new ArrayList<Flight>();
 		Mockito.when(flightDao.findCancellablyBooked(null)).thenReturn(flights);
 		assertEquals(flights, cancellationService.getCancellablyBookedFlights(null));
-		Mockito.when(flightDao.findCancellablyBooked(null)).thenThrow(new RuntimeException());
-		assertNull(cancellationService.getCancellablyBookedFlights(null));
 	}
 
 	@Test
