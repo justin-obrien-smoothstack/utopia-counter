@@ -22,11 +22,7 @@ public class CancellationService {
 	BookingDao bookingDao;
 
 	public List<Flight> getCancellablyBookedFlights(Long travelerId) {
-		try {
-			return flightDao.findCancellablyBooked(travelerId);
-		} catch (Throwable t) {
-			return null;
-		}
+		return flightDao.findCancellablyBooked(travelerId);
 	}
 
 	@Transactional
