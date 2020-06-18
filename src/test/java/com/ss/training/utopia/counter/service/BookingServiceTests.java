@@ -68,14 +68,6 @@ public class BookingServiceTests {
 	}
 
 	@Test
-	public void getAllAirportsTest() {
-		Airport[] airportArray = new Airport[0];
-		List<Airport> airportList = new ArrayList<Airport>();
-		Mockito.when(airportDao.findAll()).thenReturn(airportList);
-		assertTrue(Arrays.equals(airportArray, bookingService.getAllAirports()));
-	}
-
-	@Test
 	public void getBookableFlightsTest() {
 		Flight[] flightArray = new Flight[0];
 		List<Flight> flightList = new ArrayList<Flight>();

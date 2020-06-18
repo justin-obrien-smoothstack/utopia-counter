@@ -40,11 +40,6 @@ public class BookingService {
 		return userDao.findByUsername(username) == null;
 	}
 
-	public Airport[] getAllAirports() {
-		List<Airport> airports = airportDao.findAll();
-		return airports.toArray(new Airport[airports.size()]);
-	}
-
 	public Flight[] getBookableFlights(Long departId, Long arriveId, Long travelerId) {
 		List<Flight> flights = flightDao.findBookable(departId, arriveId, travelerId);
 		return flights.toArray(new Flight[flights.size()]);
