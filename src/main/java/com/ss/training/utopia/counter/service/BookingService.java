@@ -37,54 +37,32 @@ public class BookingService {
 	}
 
 	public Boolean usernameAvailable(String username) {
-		User user;
-		try {
-			user = userDao.findByUsername(username);
-		} catch (Throwable t) {
-			return null;
-		}
-		return user == null;
+		return userDao.findByUsername(username) == null;
 	}
 
 	public Airport[] getAllAirports() {
-		List<Airport> airports;
-		try {
-			airports = airportDao.findAll();
-		} catch (Throwable t) {
-			return null;
-		}
+		List<Airport> airports = airportDao.findAll();
 		return airports.toArray(new Airport[airports.size()]);
 	}
 
 	public Flight[] getBookableFlights(Long departId, Long arriveId, Long travelerId) {
-		List<Flight> flights;
-		try {
-			flights = flightDao.findBookable(departId, arriveId, travelerId);
-		} catch (Throwable t) {
-			return null;
-		}
+		List<Flight> flights = flightDao.findBookable(departId, arriveId, travelerId);
 		return flights.toArray(new Flight[flights.size()]);
 	}
 
 	@Transactional
 	public Boolean bookFlight(Booking booking) {
-		Flight flight;
-		try {
-			flight = flightDao.findByFlightId(booking.getFlightId());
-		} catch (Throwable t) {
-			return null;
-		}
+		Flight flight = flightDao.findByFlightId(booking.getFlightId());
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
-		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
 		// take payment & set stripeId
-		try {
-			bookingDao.save(booking);
-			flightDao.save(flight);
-		} catch (Throwable t) {
-			// cancel payment
-			return null;
-		}
+		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
+		bookingDao.save(booking);
+		flightDao.save(flight);
+		// if a DAO throws when trying to save, have controller call a function to do a
+		// refund
+		// or maybe have controller call a separate method to do transaction in the
+		// first place
 		return true;
 	}
 
