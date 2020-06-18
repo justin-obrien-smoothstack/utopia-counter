@@ -14,21 +14,12 @@ public class UserService {
 	UserDao userDao;
 
 	public Boolean userIsTraveler(String username) {
-		User user;
-		try {
-			user = userDao.findByUsername(username);
-		} catch (Throwable t) {
-			return null;
-		}
+		User user = userDao.findByUsername(username);
 		return (user != null && "TRAVELER".equals(user.getRole()));
 	}
-	
+
 	public User getUser(String username) {
-		try {
-			return userDao.findByUsername(username);
-		} catch (Throwable t) {
-			return null;
-		}
+		return userDao.findByUsername(username);
 	}
 
 }
