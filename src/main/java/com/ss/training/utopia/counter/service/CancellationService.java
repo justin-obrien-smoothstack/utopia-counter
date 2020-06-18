@@ -3,6 +3,7 @@ package com.ss.training.utopia.counter.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ss.training.utopia.counter.dao.BookingDao;
@@ -14,6 +15,7 @@ import com.ss.training.utopia.counter.entity.Flight;
 /**
  * @author Justin O'Brien
  */
+@Service
 public class CancellationService {
 
 	@Autowired
