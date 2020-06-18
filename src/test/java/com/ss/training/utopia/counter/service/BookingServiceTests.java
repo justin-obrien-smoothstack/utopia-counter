@@ -54,11 +54,9 @@ public class BookingServiceTests {
 	public void createUserTest() {
 		String password = "password";
 		User user = new User(null, null, null, password, null);
-		Mockito.when(userDao.save(user)).thenReturn(null);
-		assertTrue(bookingService.createUser(user));
+		Mockito.when(userDao.save(user)).thenReturn(user);
+		assertEquals(user, bookingService.createUser(user));
 		assertTrue(new BCryptPasswordEncoder().matches(password, user.getPassword()));
-		Mockito.when(userDao.save(user)).thenThrow(new RuntimeException());
-		assertNull(bookingService.createUser(user));
 	}
 
 	@Test

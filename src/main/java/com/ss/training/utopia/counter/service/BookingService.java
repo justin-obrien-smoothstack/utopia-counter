@@ -31,14 +31,9 @@ public class BookingService {
 	@Autowired
 	BookingDao bookingDao;
 
-	public Boolean createUser(User user) {
+	public User createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		try {
-			userDao.save(user);
-		} catch (Throwable t) {
-			return null;
-		}
-		return true;
+		return userDao.save(user);
 	}
 
 	public Boolean usernameAvailable(String username) {
