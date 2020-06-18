@@ -33,22 +33,14 @@ public class CancellationService {
 	public Boolean cancelBooking(Long travelerId, Long flightId) {
 		Flight flight;
 		Booking booking;
-		try {
-			flight = flightDao.findByFlightId(flightId);
-			booking = bookingDao.findById(new BookingPk(travelerId, flightId)).get();
-		} catch (Throwable t) {
-			return null;
-		}
+		flight = flightDao.findByFlightId(flightId);
+		booking = bookingDao.findById(new BookingPk(travelerId, flightId)).get();
 		if (!booking.isActive())
 			return false;
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() + 1));
 		booking.setActive(false);
-		try {
-			flightDao.save(flight);
-			bookingDao.save(booking);
-		} catch (Throwable t) {
-			return null;
-		}
+		flightDao.save(flight);
+		bookingDao.save(booking);
 		// issue Stripe refund
 		return true;
 	}
