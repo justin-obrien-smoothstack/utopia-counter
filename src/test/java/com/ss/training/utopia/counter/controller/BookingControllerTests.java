@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
 import com.ss.training.utopia.counter.service.BookingService;
@@ -74,6 +75,20 @@ public class BookingControllerTests {
 		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string("[]"));
 		when(service.getBookableFlights(departId, arriveId, travelerId)).thenThrow(new RuntimeException());
 		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
+	}
+
+	@Test
+	public void bookFlight() throws Exception {
+		Booking booking = new Booking(6l, 4l, 2l, true, "StripeId");
+		String uri = "/counter/booking", body = mapper.writeValueAsString(booking);
+		when(service.bookFlight(booking)).thenReturn(true, false);
+		mvc.perform(post(uri).contentType(MediaType.APPLICATION_JSON).content(body)).andExpect(status().isCreated())
+				.andExpect(content().string(""));
+		mvc.perform(post(uri).contentType(MediaType.APPLICATION_JSON).content(body)).andExpect(status().isBadRequest())
+				.andExpect(content().string(""));
+		when(service.bookFlight(booking)).thenThrow(new RuntimeException());
+		mvc.perform(post(uri).contentType(MediaType.APPLICATION_JSON).content(body))
+				.andExpect(status().isInternalServerError()).andExpect(content().string(""));
 	}
 
 }
