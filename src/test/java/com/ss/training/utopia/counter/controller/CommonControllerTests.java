@@ -30,6 +30,16 @@ public class CommonControllerTests {
 	private CommonService service;
 
 	@Test
+	public void userIsTravelerTest() throws Exception {
+		String username = "Username", uri = "/counter/traveler/" + username;
+		Mockito.when(service.userIsTraveler(username)).thenReturn(true, false);
+		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string(""));
+		mvc.perform(get(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
+		Mockito.when(service.userIsTraveler(username)).thenThrow(new RuntimeException());
+		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
+	}
+
+	@Test
 	public void getUserTest() throws Exception {
 		String username = "Username", uri = "/counter/users/" + username, expectedContent;
 		User user = new User(6l, username, "Name", "HashedPassword", "TRAVELER");
