@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +24,7 @@ import com.ss.training.utopia.counter.service.CancellationService;
  * @author Justin O'Brien
  */
 @WebMvcTest(CancellationController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class CancellationControllerTests {
 
 	@Autowired
@@ -40,7 +41,7 @@ public class CancellationControllerTests {
 		Timestamp future = new Timestamp(now + HOUR), futureTwo = new Timestamp(now + 2 * HOUR);
 		Flight[] flights = { new Flight(4l, 6l, future, 2l, (short) 3, 150f),
 				new Flight(6l, 4l, futureTwo, 3l, (short) 2, 151f) }, noFlights = {};
-		String uri = "/counter/flights/cancellable/" + travelerId, expectedContent = mapper.writeValueAsString(flights);
+		String uri = "/counter/flights/cancellable/traveler/" + travelerId, expectedContent = mapper.writeValueAsString(flights);
 		when(service.getCancellablyBookedFlights(travelerId)).thenReturn(flights, noFlights);
 		mvc.perform(get(uri)).andExpect(status().isOk()).andExpect(content().string(expectedContent));
 		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string("[]"));
