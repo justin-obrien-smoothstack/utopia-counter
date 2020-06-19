@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,9 +45,10 @@ public class CancellationServiceTests {
 
 	@Test
 	public void getCancellablyBookedFlightsTest() {
-		List<Flight> flights = new ArrayList<Flight>();
-		Mockito.when(flightDao.findCancellablyBooked(null)).thenReturn(flights);
-		assertEquals(flights, cancellationService.getCancellablyBookedFlights(null));
+		List<Flight> flightList = new ArrayList<Flight>();
+		Flight[] flightArray = flightList.toArray(new Flight[flightList.size()]);
+		Mockito.when(flightDao.findCancellablyBooked(null)).thenReturn(flightList);
+		assertTrue(Arrays.equals(flightArray, cancellationService.getCancellablyBookedFlights(null)));
 	}
 
 	@Test
