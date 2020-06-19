@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ss.training.utopia.counter.entity.Airport;
+import com.ss.training.utopia.counter.entity.User;
 import com.ss.training.utopia.counter.service.CommonService;
 
 /**
@@ -23,20 +24,32 @@ public class CommonControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
+	@Autowired
+	private ObjectMapper mapper;
 	@MockBean
 	private CommonService service;
 
 	@Test
+	public void getUserTest() throws Exception {
+		String username = "Username", uri = "/counter/users/" + username, expectedContent;
+		User user = new User(6l, username, "Name", "HashedPassword", "TRAVELER");
+		expectedContent = mapper.writeValueAsString(user);
+		Mockito.when(service.getUser(username)).thenReturn(user, (User) null);
+		mvc.perform(get(uri)).andExpect(status().isOk()).andExpect(content().string(expectedContent));
+		mvc.perform(get(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
+		Mockito.when(service.getUser(username)).thenThrow(new RuntimeException());
+		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
+	}
+
+	@Test
 	public void getAllAirportsTest() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
 		Airport[] airports = { new Airport(4l, "City 1"), new Airport(6l, "City 2") }, noAirports = {};
-		String uri = "/counter/airports", expectedContent = mapper.writeValueAsString(airports),
-				expectedEmpty = mapper.writeValueAsString(noAirports);
+		String uri = "/counter/airports", expectedContent = mapper.writeValueAsString(airports);
 		Mockito.when(service.getAllAirports()).thenReturn(airports, noAirports);
 		mvc.perform(get(uri)).andExpect(status().isOk()).andExpect(content().string(expectedContent));
-		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string(expectedEmpty));
+		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string("[]"));
 		Mockito.when(service.getAllAirports()).thenThrow(new RuntimeException());
-		mvc.perform(get(uri)).andExpect(status().isInternalServerError());
+		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
 	}
 
 }
