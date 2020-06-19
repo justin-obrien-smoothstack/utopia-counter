@@ -22,7 +22,7 @@ public class CancellationController {
 	@Autowired
 	CancellationService service;
 
-	@GetMapping(path = "/flights/cancellable/{travelerId}")
+	@GetMapping(path = "/flights/cancellable/traveler/{travelerId}")
 	public ResponseEntity<Flight[]> getCancellablyBookedFlights(@PathVariable Long travelerId) {
 		Flight[] flights = null;
 		HttpStatus status = HttpStatus.OK;
