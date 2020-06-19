@@ -22,6 +22,20 @@ public class CommonController {
 	@Autowired
 	CommonService service;
 
+	@GetMapping(path = "/traveler/{username}")
+	public ResponseEntity<Object> userIsTraveler(@PathVariable String username) {
+		Boolean isTraveler = null;
+		HttpStatus status = HttpStatus.NO_CONTENT;
+		try {
+			isTraveler = service.userIsTraveler(username);
+		} catch (Throwable t) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		if (isTraveler != null && !isTraveler)
+			status = HttpStatus.NOT_FOUND;
+		return new ResponseEntity<Object>(null, status);
+	}
+
 	@GetMapping(path = "/users/{username}")
 	public ResponseEntity<User> getUser(@PathVariable String username) {
 		Boolean thrown = false;
@@ -33,7 +47,7 @@ public class CommonController {
 			thrown = true;
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		if(!thrown && user == null)
+		if (!thrown && user == null)
 			status = HttpStatus.NOT_FOUND;
 		return new ResponseEntity<User>(user, status);
 	}
