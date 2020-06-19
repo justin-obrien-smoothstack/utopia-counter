@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
 import com.ss.training.utopia.counter.service.BookingService;
 
@@ -47,6 +48,21 @@ public class BookingController {
 		if (available != null && !available)
 			status = HttpStatus.NO_CONTENT;
 		return new ResponseEntity<Object>(null, status);
+	}
+
+	@GetMapping("flights/bookable/departure/{departId}/arrival/{arriveId}/traveler/{travelerId}")
+	public ResponseEntity<Flight[]> getBookableFlights(@PathVariable Long departId, @PathVariable Long arriveId,
+			@PathVariable Long travelerId) {
+		Flight[] flights = null;
+		HttpStatus status = HttpStatus.OK;
+		try {
+			flights = service.getBookableFlights(departId, arriveId, travelerId);
+		} catch (Throwable t) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		if (flights != null && flights.length == 0)
+			status = HttpStatus.NO_CONTENT;
+		return new ResponseEntity<Flight[]>(flights, status);
 	}
 
 }
