@@ -10,5 +10,7 @@ import com.ss.training.utopia.counter.entity.User;
  */
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
+
 	public User findByUsername(String username);
+
 }
