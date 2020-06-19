@@ -11,7 +11,6 @@ import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
-import com.ss.training.utopia.counter.entity.Airport;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
