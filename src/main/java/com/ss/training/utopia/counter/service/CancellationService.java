@@ -23,8 +23,9 @@ public class CancellationService {
 	@Autowired
 	BookingDao bookingDao;
 
-	public List<Flight> getCancellablyBookedFlights(Long travelerId) {
-		return flightDao.findCancellablyBooked(travelerId);
+	public Flight[] getCancellablyBookedFlights(Long travelerId) {
+		List<Flight> flights = flightDao.findCancellablyBooked(travelerId);
+		return flights.toArray(new Flight[flights.size()]);
 	}
 
 	@Transactional
