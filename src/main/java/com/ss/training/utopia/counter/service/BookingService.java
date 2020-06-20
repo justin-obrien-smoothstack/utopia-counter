@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;

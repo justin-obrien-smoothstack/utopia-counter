@@ -2,7 +2,6 @@ package com.ss.training.utopia.counter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
-import com.ss.training.utopia.counter.entity.Airport;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
