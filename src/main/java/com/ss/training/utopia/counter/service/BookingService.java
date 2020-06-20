@@ -22,8 +22,6 @@ import com.ss.training.utopia.counter.entity.User;
 public class BookingService {
 
 	@Autowired
-	AirportDao airportDao;
-	@Autowired
 	UserDao userDao;
 	@Autowired
 	FlightDao flightDao;
