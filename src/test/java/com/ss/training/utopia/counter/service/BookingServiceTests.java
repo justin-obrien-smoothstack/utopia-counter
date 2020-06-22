@@ -3,6 +3,7 @@ package com.ss.training.utopia.counter.service;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
@@ -30,6 +31,7 @@ import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.param.ChargeCreateParams;
 
@@ -47,8 +49,6 @@ public class BookingServiceTests {
 	private FlightDao flightDao;
 	@Mock
 	private BookingDao bookingDao;
-	@Mock
-	private StripeWrapper stripe;
 	@InjectMocks
 	private BookingService service;
 
@@ -86,21 +86,22 @@ public class BookingServiceTests {
 	public void bookFlightTest() throws StripeException {
 		final Long HOUR = 3_600_000l;
 		Long flightId = 6l, now = Instant.now().toEpochMilli();
-		String tokenId = "TokenID", chargeId = "ChargeID";
+		String tokenId = "tok_visa";// , chargeId = "ChargeID";
 		Timestamp future = new Timestamp(now + HOUR);
 		Booking booking = new Booking(4l, flightId, 3l, true, tokenId);
 		Flight flight = new Flight(2l, 8l, future, flightId, (short) 1, 150f);
 		when(flightDao.findByFlightId(flightId)).thenReturn(flight);
-		when(stripe.createChargeGetId(any(ChargeCreateParams.class))).thenReturn(chargeId);
 		assertTrue(service.bookFlight(booking));
-		assertEquals(chargeId, booking.getStripeId());
+		assertNotEquals(tokenId, booking.getStripeId());
 		assertEquals((short) 0, flight.getSeatsAvailable());
 		assertFalse(service.bookFlight(booking));
 		flight.setSeatsAvailable((short) 2);
 		when(bookingDao.save(booking)).thenThrow(new RuntimeException());
+		booking.setStripeId(tokenId);
 		assertThrows(RuntimeException.class, () -> service.bookFlight(booking));
 		reset(bookingDao);
 		when(flightDao.save(flight)).thenThrow(new RuntimeException());
+		booking.setStripeId(tokenId);
 		assertThrows(RuntimeException.class, () -> service.bookFlight(booking));
 	}
 

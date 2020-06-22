@@ -16,6 +16,7 @@ import com.ss.training.utopia.counter.entity.User;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import com.stripe.model.Refund;
 import com.stripe.param.ChargeCreateParams;
 import com.stripe.param.RefundCreateParams;
 
@@ -31,8 +32,6 @@ public class BookingService {
 	FlightDao flightDao;
 	@Autowired
 	BookingDao bookingDao;
-	@Autowired
-	StripeWrapper stripe;
 
 	public User createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -51,17 +50,18 @@ public class BookingService {
 	@Transactional
 	public Boolean bookFlight(Booking booking) throws StripeException {
 		Flight flight = flightDao.findByFlightId(booking.getFlightId());
+		Stripe.apiKey = "sk_test_51GwErbJwa8c7tq3Odc3WXzypPn0OPpPAd6O5gjvRBBEb15K77CX8D2XSGyyXYgbpNJ0tW52TNRY8ox0o8iKgTkqj00v7B6meHs";
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
 		booking.setStripeId(
-				stripe.createChargeGetId(ChargeCreateParams.builder().setAmount((long) (100 * flight.getPrice()))
-						.setCurrency("usd").setSource(booking.getStripeId()).build()));
+				Charge.create(ChargeCreateParams.builder().setAmount((long) (100 * flight.getPrice()))
+						.setCurrency("usd").setSource(booking.getStripeId()).build()).getId());
 		try {
 			bookingDao.save(booking);
 			flightDao.save(flight);
 		} catch (Throwable t) {
-			stripe.createRefund(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
+			Refund.create(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
 			throw t;
 		}
 		return true;
