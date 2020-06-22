@@ -13,6 +13,11 @@ import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.param.ChargeCreateParams;
+import com.stripe.param.RefundCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -26,6 +31,8 @@ public class BookingService {
 	FlightDao flightDao;
 	@Autowired
 	BookingDao bookingDao;
+	@Autowired
+	StripeWrapper stripe;
 
 	public User createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -42,18 +49,21 @@ public class BookingService {
 	}
 
 	@Transactional
-	public Boolean bookFlight(Booking booking) {
+	public Boolean bookFlight(Booking booking) throws StripeException {
 		Flight flight = flightDao.findByFlightId(booking.getFlightId());
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
-		// take payment & set stripeId
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
-		bookingDao.save(booking);
-		flightDao.save(flight);
-		// if a DAO throws when trying to save, have controller call a function to do a
-		// refund
-		// or maybe have controller call a separate method to do transaction in the
-		// first place
+		booking.setStripeId(
+				stripe.createChargeGetId(ChargeCreateParams.builder().setAmount((long) (100 * flight.getPrice()))
+						.setCurrency("usd").setSource(booking.getStripeId()).build()));
+		try {
+			bookingDao.save(booking);
+			flightDao.save(flight);
+		} catch (Throwable t) {
+			stripe.createRefund(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
+			throw t;
+		}
 		return true;
 	}
 
