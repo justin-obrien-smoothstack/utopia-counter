@@ -11,6 +11,10 @@ import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.BookingPk;
 import com.ss.training.utopia.counter.entity.Flight;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Refund;
+import com.stripe.param.RefundCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -29,9 +33,10 @@ public class CancellationService {
 	}
 
 	@Transactional
-	public Boolean cancelBooking(Long travelerId, Long flightId) {
+	public Boolean cancelBooking(Long travelerId, Long flightId) throws StripeException {
 		Flight flight;
 		Booking booking;
+		Stripe.apiKey = "sk_test_51GwErbJwa8c7tq3Odc3WXzypPn0OPpPAd6O5gjvRBBEb15K77CX8D2XSGyyXYgbpNJ0tW52TNRY8ox0o8iKgTkqj00v7B6meHs";
 		flight = flightDao.findByFlightId(flightId);
 		booking = bookingDao.findById(new BookingPk(travelerId, flightId)).get();
 		if (!booking.isActive())
@@ -40,7 +45,7 @@ public class CancellationService {
 		booking.setActive(false);
 		flightDao.save(flight);
 		bookingDao.save(booking);
-		// issue Stripe refund
+		Refund.create(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
 		return true;
 	}
 
