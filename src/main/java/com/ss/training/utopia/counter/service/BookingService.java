@@ -35,7 +35,9 @@ public class BookingService {
 
 	public User createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		return userDao.save(user);
+		user = userDao.save(user);
+		user.setPassword(null);
+		return user;
 	}
 
 	public Boolean usernameAvailable(String username) {
