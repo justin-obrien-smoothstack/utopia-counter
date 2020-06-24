@@ -1,6 +1,5 @@
 package com.ss.training.utopia.counter.service;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -31,9 +30,7 @@ import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.param.ChargeCreateParams;
 
 /**
  * @author Justin O'Brien
