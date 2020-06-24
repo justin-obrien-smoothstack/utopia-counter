@@ -7,13 +7,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.model.Refund;
+import com.stripe.param.ChargeCreateParams;
+import com.stripe.param.RefundCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -43,18 +48,22 @@ public class BookingService {
 	}
 
 	@Transactional
-	public Boolean bookFlight(Booking booking) {
+	public Boolean bookFlight(Booking booking) throws StripeException {
 		Flight flight = flightDao.findByFlightId(booking.getFlightId());
+		Stripe.apiKey = "sk_test_51GwErbJwa8c7tq3Odc3WXzypPn0OPpPAd6O5gjvRBBEb15K77CX8D2XSGyyXYgbpNJ0tW52TNRY8ox0o8iKgTkqj00v7B6meHs";
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
-		// take payment & set stripeId
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
-		bookingDao.save(booking);
-		flightDao.save(flight);
-		// if a DAO throws when trying to save, have controller call a function to do a
-		// refund
-		// or maybe have controller call a separate method to do transaction in the
-		// first place
+		booking.setStripeId(
+				Charge.create(ChargeCreateParams.builder().setAmount((long) (100 * flight.getPrice()))
+						.setCurrency("usd").setSource(booking.getStripeId()).build()).getId());
+		try {
+			bookingDao.save(booking);
+			flightDao.save(flight);
+		} catch (Throwable t) {
+			Refund.create(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
+			throw t;
+		}
 		return true;
 	}
 
