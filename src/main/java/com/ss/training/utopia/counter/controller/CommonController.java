@@ -16,7 +16,7 @@ import com.ss.training.utopia.counter.service.CommonService;
  * @author Justin O'Brien
  */
 @RestController
-@RequestMapping(path = "/counter")
+@RequestMapping("/counter")
 public class CommonController {
 
 	@Autowired
@@ -36,7 +36,7 @@ public class CommonController {
 		return new ResponseEntity<Object>(null, status);
 	}
 
-	@GetMapping(path = "/users/{username}")
+	@GetMapping("/users/{username}")
 	public ResponseEntity<User> getUser(@PathVariable String username) {
 		Boolean thrown = false;
 		HttpStatus status = HttpStatus.OK;
@@ -52,7 +52,7 @@ public class CommonController {
 		return new ResponseEntity<User>(user, status);
 	}
 
-	@GetMapping(path = "/airports")
+	@GetMapping("/airports")
 	public ResponseEntity<Airport[]> getAllAirports() {
 		HttpStatus status = HttpStatus.OK;
 		Airport[] airports = null;
