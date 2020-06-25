@@ -1,6 +1,5 @@
 package com.ss.training.utopia.counter.service;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -31,9 +30,7 @@ import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.param.ChargeCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -86,7 +83,7 @@ public class BookingServiceTests {
 	public void bookFlightTest() throws StripeException {
 		final Long HOUR = 3_600_000l;
 		Long flightId = 6l, now = Instant.now().toEpochMilli();
-		String tokenId = "tok_visa";// , chargeId = "ChargeID";
+		String tokenId = "tok_visa";
 		Timestamp future = new Timestamp(now + HOUR);
 		Booking booking = new Booking(4l, flightId, 3l, true, tokenId);
 		Flight flight = new Flight(2l, 8l, future, flightId, (short) 1, 150f);
