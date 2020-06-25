@@ -19,7 +19,7 @@ import com.ss.training.utopia.counter.service.BookingService;
  * @author Justin O'Brien
  */
 @RestController
-@RequestMapping(path = "/counter")
+@RequestMapping("/counter")
 public class BookingController {
 
 	@Autowired
