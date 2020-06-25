@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.entity.Booking;
@@ -58,7 +59,7 @@ public class CancellationServiceTests {
 
 	@Test
 	public void cancelBookingTest() throws StripeException {
-		Stripe.apiKey = "sk_test_51GwErbJwa8c7tq3Odc3WXzypPn0OPpPAd6O5gjvRBBEb15K77CX8D2XSGyyXYgbpNJ0tW52TNRY8ox0o8iKgTkqj00v7B6meHs";
+		Stripe.apiKey = Secrets.stripeKey;
 		final Long HOUR = 3_600_000l;
 		Short initialSeatsAvailable = 0;
 		Long travelerId = 6l, flightId = 4l, now = Instant.now().toEpochMilli();
