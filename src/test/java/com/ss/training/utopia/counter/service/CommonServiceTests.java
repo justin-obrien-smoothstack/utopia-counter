@@ -56,6 +56,8 @@ public class CommonServiceTests {
 		Mockito.when(userDao.findByUsername(null)).thenReturn(user);
 		assertEquals(user, commonService.getUser(null));
 		assertNull(user.getPassword());
+		Mockito.when(userDao.findByUsername(null)).thenReturn(null);
+		assertNull(commonService.getUser(null));
 	}
 
 	@Test
