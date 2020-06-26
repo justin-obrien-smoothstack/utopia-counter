@@ -27,9 +27,11 @@ public class CommonService {
 	}
 
 	public User getUser(String username) {
-		return userDao.findByUsername(username);
+		User user = userDao.findByUsername(username);
+		user.setPassword(null);
+		return user;
 	}
-	
+
 	public Airport[] getAllAirports() {
 		List<Airport> airports = airportDao.findAll();
 		return airports.toArray(new Airport[airports.size()]);

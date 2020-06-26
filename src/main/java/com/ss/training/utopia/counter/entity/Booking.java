@@ -94,6 +94,10 @@ public class Booking implements Serializable {
 		return stripeId;
 	}
 
+	public void setStripeId(String stripeId) {
+		this.stripeId = stripeId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

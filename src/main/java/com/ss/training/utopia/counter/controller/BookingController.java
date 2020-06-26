@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.training.utopia.counter.entity.Booking;
@@ -19,7 +20,7 @@ import com.ss.training.utopia.counter.service.BookingService;
  * @author Justin O'Brien
  */
 @RestController
-@RequestMapping(path = "/counter")
+@RequestMapping("/counter")
 public class BookingController {
 
 	@Autowired
@@ -37,7 +38,7 @@ public class BookingController {
 		return new ResponseEntity<User>(user, status);
 	}
 
-	@GetMapping("/user/{username}")
+	@RequestMapping(method = RequestMethod.HEAD, path = "/user/{username}")
 	public ResponseEntity<Object> usernameAvailable(@PathVariable String username) {
 		Boolean available = null;
 		HttpStatus status = HttpStatus.NOT_FOUND;

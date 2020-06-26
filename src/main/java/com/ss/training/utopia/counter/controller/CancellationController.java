@@ -22,7 +22,7 @@ public class CancellationController {
 	@Autowired
 	CancellationService service;
 
-	@GetMapping(path = "/flights/cancellable/traveler/{travelerId}")
+	@GetMapping("/flights/cancellable/traveler/{travelerId}")
 	public ResponseEntity<Flight[]> getCancellablyBookedFlights(@PathVariable Long travelerId) {
 		Flight[] flights = null;
 		HttpStatus status = HttpStatus.OK;
@@ -36,8 +36,8 @@ public class CancellationController {
 		return new ResponseEntity<Flight[]>(flights, status);
 	}
 
-	@PutMapping(path = "/bookings/traveler/{travelerId}/flight/{flightId}")
-	public ResponseEntity<Object> cancelBooking(@PathVariable Long travelerId, @PathVariable long flightId) {
+	@PutMapping("/bookings/traveler/{travelerId}/flight/{flightId}")
+	public ResponseEntity<Object> cancelBooking(@PathVariable Long travelerId, @PathVariable Long flightId) {
 		Boolean goodRequest = null;
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		try {

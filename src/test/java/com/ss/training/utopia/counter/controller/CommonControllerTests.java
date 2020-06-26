@@ -1,6 +1,7 @@
 package com.ss.training.utopia.counter.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,10 +36,10 @@ public class CommonControllerTests {
 	public void userIsTravelerTest() throws Exception {
 		String username = "Username", uri = "/counter/traveler/" + username;
 		Mockito.when(service.userIsTraveler(username)).thenReturn(true, false);
-		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string(""));
-		mvc.perform(get(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isNoContent()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
 		Mockito.when(service.userIsTraveler(username)).thenThrow(new RuntimeException());
-		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
 	}
 
 	@Test

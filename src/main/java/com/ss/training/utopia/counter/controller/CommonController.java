@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.training.utopia.counter.entity.Airport;
@@ -16,13 +17,13 @@ import com.ss.training.utopia.counter.service.CommonService;
  * @author Justin O'Brien
  */
 @RestController
-@RequestMapping(path = "/counter")
+@RequestMapping("/counter")
 public class CommonController {
 
 	@Autowired
 	CommonService service;
 
-	@GetMapping(path = "/traveler/{username}")
+	@RequestMapping(method = RequestMethod.HEAD, path = "/traveler/{username}")
 	public ResponseEntity<Object> userIsTraveler(@PathVariable String username) {
 		Boolean isTraveler = null;
 		HttpStatus status = HttpStatus.NO_CONTENT;
@@ -36,7 +37,7 @@ public class CommonController {
 		return new ResponseEntity<Object>(null, status);
 	}
 
-	@GetMapping(path = "/users/{username}")
+	@GetMapping("/users/{username}")
 	public ResponseEntity<User> getUser(@PathVariable String username) {
 		Boolean thrown = false;
 		HttpStatus status = HttpStatus.OK;
@@ -52,7 +53,7 @@ public class CommonController {
 		return new ResponseEntity<User>(user, status);
 	}
 
-	@GetMapping(path = "/airports")
+	@GetMapping("/airports")
 	public ResponseEntity<Airport[]> getAllAirports() {
 		HttpStatus status = HttpStatus.OK;
 		Airport[] airports = null;
