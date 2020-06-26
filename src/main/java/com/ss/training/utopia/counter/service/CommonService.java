@@ -28,7 +28,8 @@ public class CommonService {
 
 	public User getUser(String username) {
 		User user = userDao.findByUsername(username);
-		user.setPassword(null);
+		if (user != null)
+			user.setPassword(null);
 		return user;
 	}
 
