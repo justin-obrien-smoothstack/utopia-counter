@@ -2,6 +2,7 @@ package com.ss.training.utopia.counter.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,10 +56,10 @@ public class BookingControllerTests {
 	public void usernameAvailableTest() throws Exception {
 		String username = "Username", uri = "/counter/user/" + username;
 		when(service.usernameAvailable(username)).thenReturn(true, false);
-		mvc.perform(get(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
-		mvc.perform(get(uri)).andExpect(status().isNoContent()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isNotFound()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isNoContent()).andExpect(content().string(""));
 		when(service.usernameAvailable(username)).thenThrow(new RuntimeException());
-		mvc.perform(get(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
+		mvc.perform(head(uri)).andExpect(status().isInternalServerError()).andExpect(content().string(""));
 	}
 
 	@Test
