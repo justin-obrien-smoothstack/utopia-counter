@@ -52,7 +52,7 @@ public class BookingController {
 		return new ResponseEntity<Object>(null, status);
 	}
 
-	@GetMapping("flights/bookable/departure/{departId}/arrival/{arriveId}/traveler/{travelerId}")
+	@GetMapping("/flights/bookable/departure/{departId}/arrival/{arriveId}/traveler/{travelerId}")
 	public ResponseEntity<Flight[]> getBookableFlights(@PathVariable Long departId, @PathVariable Long arriveId,
 			@PathVariable Long travelerId) {
 		Flight[] flights = null;
