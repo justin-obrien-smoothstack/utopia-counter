@@ -3,6 +3,7 @@ package com.ss.training.utopia.counter.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
@@ -21,7 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
@@ -60,7 +60,7 @@ public class BookingServiceTests {
 		User user = new User(null, null, null, password, null);
 		when(userDao.save(user)).thenReturn(user);
 		assertEquals(user, service.createUser(user));
-		assertTrue(new BCryptPasswordEncoder().matches(password, user.getPassword()));
+		assertNull(user.getPassword());
 	}
 
 	@Test

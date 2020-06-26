@@ -2,6 +2,7 @@ package com.ss.training.utopia.counter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -51,8 +52,10 @@ public class CommonServiceTests {
 	@Test
 	public void getUserTest() {
 		User user = new User();
+		user.setPassword("password");
 		Mockito.when(userDao.findByUsername(null)).thenReturn(user);
 		assertEquals(user, commonService.getUser(null));
+		assertNull(user.getPassword());
 	}
 
 	@Test
