@@ -37,7 +37,7 @@ public class CancellationController {
 	}
 
 	@PutMapping("/bookings/traveler/{travelerId}/flight/{flightId}")
-	public ResponseEntity<Object> cancelBooking(@PathVariable Long travelerId, @PathVariable long flightId) {
+	public ResponseEntity<Object> cancelBooking(@PathVariable Long travelerId, @PathVariable Long flightId) {
 		Boolean goodRequest = null;
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		try {
