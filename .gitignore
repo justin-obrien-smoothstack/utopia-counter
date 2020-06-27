@@ -32,3 +32,8 @@ build/
 /.mvn/
 /mvnw
 /mvnw.cmd
+/hs_err_pid162916.log
+/hs_err_pid209736.log
+/replay_pid162916.log
+/replay_pid209736.log
+/Utopia.postman_collection.json
