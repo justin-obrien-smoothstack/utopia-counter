@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.BookingPk;
 import com.ss.training.utopia.counter.entity.Flight;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Refund;
+import com.stripe.param.RefundCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -29,9 +34,10 @@ public class CancellationService {
 	}
 
 	@Transactional
-	public Boolean cancelBooking(Long travelerId, Long flightId) {
+	public Boolean cancelBooking(Long travelerId, Long flightId) throws StripeException {
 		Flight flight;
 		Booking booking;
+		Stripe.apiKey = Secrets.stripeKey;
 		flight = flightDao.findByFlightId(flightId);
 		booking = bookingDao.findById(new BookingPk(travelerId, flightId)).get();
 		if (!booking.isActive())
@@ -40,7 +46,7 @@ public class CancellationService {
 		booking.setActive(false);
 		flightDao.save(flight);
 		bookingDao.save(booking);
-		// issue Stripe refund
+		Refund.create(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
 		return true;
 	}
 
