@@ -83,7 +83,7 @@ public class BookingServiceTests {
 	public void bookFlightTest() throws StripeException {
 		final Long HOUR = 3_600_000l;
 		Long flightId = 6l, now = Instant.now().toEpochMilli();
-		String tokenId = "tok_visa";// , chargeId = "ChargeID";
+		String tokenId = "tok_visa";
 		Timestamp future = new Timestamp(now + HOUR);
 		Booking booking = new Booking(4l, flightId, 3l, true, tokenId);
 		Flight flight = new Flight(2l, 8l, future, flightId, (short) 1, 150f);

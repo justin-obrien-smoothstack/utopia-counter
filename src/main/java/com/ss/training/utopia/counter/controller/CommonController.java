@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.training.utopia.counter.entity.Airport;
@@ -22,7 +23,7 @@ public class CommonController {
 	@Autowired
 	CommonService service;
 
-	@GetMapping(path = "/traveler/{username}")
+	@RequestMapping(method = RequestMethod.HEAD, path = "/traveler/{username}")
 	public ResponseEntity<Object> userIsTraveler(@PathVariable String username) {
 		Boolean isTraveler = null;
 		HttpStatus status = HttpStatus.NO_CONTENT;

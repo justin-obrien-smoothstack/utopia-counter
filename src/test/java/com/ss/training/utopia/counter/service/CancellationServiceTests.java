@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,11 +20,16 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.BookingPk;
 import com.ss.training.utopia.counter.entity.Flight;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.param.ChargeCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -35,7 +42,7 @@ public class CancellationServiceTests {
 	@Mock
 	private BookingDao bookingDao;
 	@InjectMocks
-	private CancellationService cancellationService;
+	private CancellationService service;
 
 	@BeforeEach
 	private void before() {
@@ -47,20 +54,27 @@ public class CancellationServiceTests {
 		List<Flight> flightList = new ArrayList<Flight>();
 		Flight[] flightArray = flightList.toArray(new Flight[flightList.size()]);
 		Mockito.when(flightDao.findCancellablyBooked(null)).thenReturn(flightList);
-		assertTrue(Arrays.equals(flightArray, cancellationService.getCancellablyBookedFlights(null)));
+		assertTrue(Arrays.equals(flightArray, service.getCancellablyBookedFlights(null)));
 	}
 
 	@Test
-	public void cancelBookingTest() {
+	public void cancelBookingTest() throws StripeException {
+		Stripe.apiKey = Secrets.stripeKey;
+		final Long HOUR = 3_600_000l;
 		Short initialSeatsAvailable = 0;
-		Flight flight = new Flight(null, null, null, null, initialSeatsAvailable, null);
-		Booking booking = new Booking(null, null, null, true, null);
-		Mockito.when(flightDao.findByFlightId(null)).thenReturn(flight);
-		Mockito.when(bookingDao.findById(new BookingPk(null, null))).thenReturn(Optional.of(booking));
-		assertTrue(cancellationService.cancelBooking(null, null));
+		Long travelerId = 6l, flightId = 4l, now = Instant.now().toEpochMilli();
+		Float price = 150f;
+		String chargeId = Charge.create(ChargeCreateParams.builder().setAmount((long) (100 * price)).setCurrency("usd")
+				.setSource("tok_visa").build()).getId();
+		Timestamp future = new Timestamp(now + HOUR);
+		Flight flight = new Flight(2l, 3l, future, flightId, initialSeatsAvailable, price);
+		Booking booking = new Booking(travelerId, flightId, 8l, true, chargeId);
+		Mockito.when(flightDao.findByFlightId(flightId)).thenReturn(flight);
+		Mockito.when(bookingDao.findById(new BookingPk(travelerId, flightId))).thenReturn(Optional.of(booking));
+		assertTrue(service.cancelBooking(travelerId, flightId));
 		assertEquals((short) (initialSeatsAvailable + 1), flight.getSeatsAvailable());
 		assertFalse(booking.isActive());
-		assertFalse(cancellationService.cancelBooking(null, null));
+		assertFalse(service.cancelBooking(travelerId, flightId));
 	}
 
 }
