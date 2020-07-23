@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.UserDao;
@@ -53,7 +52,7 @@ public class BookingService {
 	@Transactional
 	public Boolean bookFlight(Booking booking) throws StripeException {
 		Flight flight = flightDao.findByFlightId(booking.getFlightId());
-		Stripe.apiKey = Secrets.stripeKey;
+		Stripe.apiKey = System.getenv("STRIPE_KEY");
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
