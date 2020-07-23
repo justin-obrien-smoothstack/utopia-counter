@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.entity.Booking;
@@ -37,7 +36,7 @@ public class CancellationService {
 	public Boolean cancelBooking(Long travelerId, Long flightId) throws StripeException {
 		Flight flight;
 		Booking booking;
-		Stripe.apiKey = Secrets.stripeKey;
+		Stripe.apiKey = System.getenv("STRIPE_KEY");
 		flight = flightDao.findByFlightId(flightId);
 		booking = bookingDao.findById(new BookingPk(travelerId, flightId)).get();
 		if (!booking.isActive())
