@@ -21,16 +21,19 @@ public class Flight implements Serializable {
 
 	private static final long serialVersionUID = -9104220295315031366L;
 
+	@Column
+	private Long departId, arriveId;
+
 	@Id
-	@ManyToOne
-	@JoinColumn(name="departId", referencedColumnName = "airportId")
+	@ManyToOne()
+	@JoinColumn(name = "departId", referencedColumnName = "airportId",insertable=false, updatable=false)
 	private Airport departAirport;
-	
+
 	@Id
 	@ManyToOne
-	@JoinColumn(name="arriveId", referencedColumnName = "airportId")
+	@JoinColumn(name = "arriveId", referencedColumnName = "airportId",insertable=false, updatable=false)
 	private Airport arriveAirport;
-	
+
 	@Id
 	@Column
 	private Timestamp departTime;
@@ -58,10 +61,28 @@ public class Flight implements Serializable {
 	 * @param seatsAvailable
 	 * @param price
 	 */
-	public Flight(Airport departAirport, Airport arriveAirport, Timestamp departTime, Long flightId, Short seatsAvailable,
-			Float price) {
+	public Flight(Airport departAirport, Airport arriveAirport, Timestamp departTime, Long flightId,
+			Short seatsAvailable, Float price) {
 		this.departAirport = departAirport;
 		this.arriveAirport = arriveAirport;
+		this.departTime = departTime;
+		this.flightId = flightId;
+		this.seatsAvailable = seatsAvailable;
+		this.price = price;
+	}
+
+	/**
+	 * @param departId
+	 * @param arriveId
+	 * @param departTime
+	 * @param flightId
+	 * @param seatsAvailable
+	 * @param price
+	 */
+	public Flight(Long departId, Long arriveId, Timestamp departTime, Long flightId, Short seatsAvailable,
+			Float price) {
+		this.departId = departId;
+		this.arriveId = arriveId;
 		this.departTime = departTime;
 		this.flightId = flightId;
 		this.seatsAvailable = seatsAvailable;
@@ -108,6 +129,17 @@ public class Flight implements Serializable {
 	 */
 	public Airport getArriveAirport() {
 		return arriveAirport;
+	}
+
+	public Long getDepartId() {
+		return departId;
+	}
+
+	/**
+	 * @return the arriveId
+	 */
+	public Long getArriveId() {
+		return arriveId;
 	}
 
 	/**
