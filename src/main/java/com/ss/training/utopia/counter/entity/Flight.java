@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,9 +22,15 @@ public class Flight implements Serializable {
 	private static final long serialVersionUID = -9104220295315031366L;
 
 	@Id
-	@Column
-	private Long departId, arriveId;
-
+	@ManyToOne
+	@JoinColumn(name="departId", referencedColumnName = "airportId")
+	private Airport departAirport;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name="arriveId", referencedColumnName = "airportId")
+	private Airport arriveAirport;
+	
 	@Id
 	@Column
 	private Timestamp departTime;
@@ -43,17 +51,17 @@ public class Flight implements Serializable {
 	}
 
 	/**
-	 * @param departId
-	 * @param arriveId
+	 * @param departAirport
+	 * @param arriveAirport
 	 * @param departTime
 	 * @param flightId
 	 * @param seatsAvailable
 	 * @param price
 	 */
-	public Flight(Long departId, Long arriveId, Timestamp departTime, Long flightId, Short seatsAvailable,
+	public Flight(Airport departAirport, Airport arriveAirport, Timestamp departTime, Long flightId, Short seatsAvailable,
 			Float price) {
-		this.departId = departId;
-		this.arriveId = arriveId;
+		this.departAirport = departAirport;
+		this.arriveAirport = arriveAirport;
 		this.departTime = departTime;
 		this.flightId = flightId;
 		this.seatsAvailable = seatsAvailable;
@@ -91,15 +99,15 @@ public class Flight implements Serializable {
 	/**
 	 * @return the departId
 	 */
-	public Long getDepartId() {
-		return departId;
+	public Airport getDepartAirport() {
+		return departAirport;
 	}
 
 	/**
 	 * @return the arriveId
 	 */
-	public Long getArriveId() {
-		return arriveId;
+	public Airport getArriveAirport() {
+		return arriveAirport;
 	}
 
 	/**
@@ -120,8 +128,8 @@ public class Flight implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((arriveId == null) ? 0 : arriveId.hashCode());
-		result = prime * result + ((departId == null) ? 0 : departId.hashCode());
+		result = prime * result + ((arriveAirport == null) ? 0 : arriveAirport.hashCode());
+		result = prime * result + ((departAirport == null) ? 0 : departAirport.hashCode());
 		result = prime * result + ((departTime == null) ? 0 : departTime.hashCode());
 		return result;
 	}
@@ -135,15 +143,15 @@ public class Flight implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Flight other = (Flight) obj;
-		if (arriveId == null) {
-			if (other.arriveId != null)
+		if (arriveAirport == null) {
+			if (other.arriveAirport != null)
 				return false;
-		} else if (!arriveId.equals(other.arriveId))
+		} else if (!arriveAirport.equals(other.arriveAirport))
 			return false;
-		if (departId == null) {
-			if (other.departId != null)
+		if (departAirport == null) {
+			if (other.departAirport != null)
 				return false;
-		} else if (!departId.equals(other.departId))
+		} else if (!departAirport.equals(other.departAirport))
 			return false;
 		if (departTime == null) {
 			if (other.departTime != null)
