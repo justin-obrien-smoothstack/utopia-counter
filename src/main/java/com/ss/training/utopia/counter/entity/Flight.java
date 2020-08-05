@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "tbl_flight")
 @IdClass(FlightPk.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "flightId")
 public class Flight implements Serializable {
 
 	private static final long serialVersionUID = -9104220295315031366L;
@@ -33,7 +34,6 @@ public class Flight implements Serializable {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "departId", referencedColumnName = "airportId",insertable=false, updatable=false)
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Airport departAirport;
 
 	

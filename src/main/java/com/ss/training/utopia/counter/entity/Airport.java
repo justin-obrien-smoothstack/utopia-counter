@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 @Entity
 @Table(name = "tbl_airport")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "airportId")
 public class Airport implements Serializable {
 
 	private static final long serialVersionUID = 5424938813745219349L;
@@ -32,14 +33,14 @@ public class Airport implements Serializable {
 //	@JsonBackReference
 	@OneToMany(mappedBy = "departAirport")
 //	@JoinColumn(name = "departId")
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Set<Flight> flightsFrom;
 
 	
 //	@JsonBackReference
 	@OneToMany(mappedBy = "arriveAirport")
 //	@JoinColumn(name = "arriveId")
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Set<Flight> flightsTo;
 
 	/**
