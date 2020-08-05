@@ -31,9 +31,9 @@ public class Flight implements Serializable {
 	
 //	@JsonManagedReference
 	@Id
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "departId", referencedColumnName = "airportId",insertable=false, updatable=false)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Airport departAirport;
 
 	
@@ -41,7 +41,7 @@ public class Flight implements Serializable {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "arriveId", referencedColumnName = "airportId",insertable=false, updatable=false)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Airport arriveAirport;
 
 	@Id
