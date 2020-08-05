@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  * @author Justin O'Brien
  */
@@ -24,14 +28,20 @@ public class Flight implements Serializable {
 	@Column
 	private Long departId, arriveId;
 
+	
+//	@JsonManagedReference
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "departId", referencedColumnName = "airportId",insertable=false, updatable=false)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Airport departAirport;
 
+	
+//	@JsonManagedReference
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "arriveId", referencedColumnName = "airportId",insertable=false, updatable=false)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Airport arriveAirport;
 
 	@Id

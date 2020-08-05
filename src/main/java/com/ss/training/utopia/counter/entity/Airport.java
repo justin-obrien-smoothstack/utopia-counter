@@ -1,11 +1,16 @@
 package com.ss.training.utopia.counter.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * @author Justin O'Brien
@@ -22,6 +27,34 @@ public class Airport implements Serializable {
 
 	@Column
 	private String name;
+
+	
+//	@JsonBackReference
+	@OneToMany(mappedBy = "departAirport")
+//	@JoinColumn(name = "departId")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+	private Set<Flight> flightsFrom;
+
+	
+//	@JsonBackReference
+	@OneToMany(mappedBy = "arriveAirport")
+//	@JoinColumn(name = "arriveId")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+	private Set<Flight> flightsTo;
+
+	/**
+	 * @return the flightsFrom
+	 */
+	public Set<Flight> getFlightsFrom() {
+		return flightsFrom;
+	}
+
+	/**
+	 * @return the flightsTo
+	 */
+	public Set<Flight> getFlightsTo() {
+		return flightsTo;
+	}
 
 	/**
 	 * 
