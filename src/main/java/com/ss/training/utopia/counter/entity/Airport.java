@@ -9,18 +9,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * @author Justin O'Brien
  */
 @Entity
 @Table(name = "tbl_airport")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "airportId")
 public class Airport implements Serializable {
 
-	private static final long serialVersionUID = 5424938813745219349L;
+	private static final long serialVersionUID = -1658156354741238647L;
 
 	@Id
 	@Column
@@ -29,18 +27,12 @@ public class Airport implements Serializable {
 	@Column
 	private String name;
 
-	
-//	@JsonBackReference
+	@JsonBackReference
 	@OneToMany(mappedBy = "departAirport")
-//	@JoinColumn(name = "departId")
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Set<Flight> flightsFrom;
 
-	
-//	@JsonBackReference
+	@JsonBackReference
 	@OneToMany(mappedBy = "arriveAirport")
-//	@JoinColumn(name = "arriveId")
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
 	private Set<Flight> flightsTo;
 
 	/**

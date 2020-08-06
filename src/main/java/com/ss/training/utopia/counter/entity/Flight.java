@@ -2,6 +2,7 @@ package com.ss.training.utopia.counter.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * @author Justin O'Brien
@@ -21,32 +22,32 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "tbl_flight")
 @IdClass(FlightPk.class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "flightId")
 public class Flight implements Serializable {
 
-	private static final long serialVersionUID = -9104220295315031366L;
+	private static final long serialVersionUID = 3629271560675532294L;
 
 	@Column
 	private Long departId, arriveId;
 
-	
-//	@JsonManagedReference
+	@JsonManagedReference
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "departId", referencedColumnName = "airportId",insertable=false, updatable=false)
+	@JoinColumn(name = "departId", referencedColumnName = "airportId", insertable = false, updatable = false)
 	private Airport departAirport;
 
-	
-//	@JsonManagedReference
+	@JsonManagedReference
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "arriveId", referencedColumnName = "airportId",insertable=false, updatable=false)
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+	@JoinColumn(name = "arriveId", referencedColumnName = "airportId", insertable = false, updatable = false)
 	private Airport arriveAirport;
 
 	@Id
 	@Column
 	private Timestamp departTime;
+
+	@JsonBackReference
+	@OneToMany(mappedBy = "flight")
+	private Set<Booking> bookings;
 
 	@Column(unique = true)
 	private Long flightId;
@@ -97,6 +98,13 @@ public class Flight implements Serializable {
 		this.flightId = flightId;
 		this.seatsAvailable = seatsAvailable;
 		this.price = price;
+	}
+
+	/**
+	 * @return the bookings
+	 */
+	public Set<Booking> getBookings() {
+		return bookings;
 	}
 
 	/**
