@@ -2,12 +2,19 @@ package com.ss.training.utopia.counter.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * @author Justin O'Brien
@@ -17,15 +24,30 @@ import javax.persistence.Table;
 @IdClass(FlightPk.class)
 public class Flight implements Serializable {
 
-	private static final long serialVersionUID = -9104220295315031366L;
+	private static final long serialVersionUID = 3629271560675532294L;
 
-	@Id
 	@Column
 	private Long departId, arriveId;
+
+	@JsonManagedReference
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "departId", referencedColumnName = "airportId", insertable = false, updatable = false)
+	private Airport departAirport;
+
+	@JsonManagedReference
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "arriveId", referencedColumnName = "airportId", insertable = false, updatable = false)
+	private Airport arriveAirport;
 
 	@Id
 	@Column
 	private Timestamp departTime;
+
+	@JsonBackReference
+	@OneToMany(mappedBy = "flight")
+	private Set<Booking> bookings;
 
 	@Column(unique = true)
 	private Long flightId;
@@ -40,6 +62,24 @@ public class Flight implements Serializable {
 	 * 
 	 */
 	public Flight() {
+	}
+
+	/**
+	 * @param departAirport
+	 * @param arriveAirport
+	 * @param departTime
+	 * @param flightId
+	 * @param seatsAvailable
+	 * @param price
+	 */
+	public Flight(Airport departAirport, Airport arriveAirport, Timestamp departTime, Long flightId,
+			Short seatsAvailable, Float price) {
+		this.departAirport = departAirport;
+		this.arriveAirport = arriveAirport;
+		this.departTime = departTime;
+		this.flightId = flightId;
+		this.seatsAvailable = seatsAvailable;
+		this.price = price;
 	}
 
 	/**
@@ -58,6 +98,13 @@ public class Flight implements Serializable {
 		this.flightId = flightId;
 		this.seatsAvailable = seatsAvailable;
 		this.price = price;
+	}
+
+	/**
+	 * @return the bookings
+	 */
+	public Set<Booking> getBookings() {
+		return bookings;
 	}
 
 	/**
@@ -91,6 +138,17 @@ public class Flight implements Serializable {
 	/**
 	 * @return the departId
 	 */
+	public Airport getDepartAirport() {
+		return departAirport;
+	}
+
+	/**
+	 * @return the arriveId
+	 */
+	public Airport getArriveAirport() {
+		return arriveAirport;
+	}
+
 	public Long getDepartId() {
 		return departId;
 	}
@@ -120,8 +178,8 @@ public class Flight implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((arriveId == null) ? 0 : arriveId.hashCode());
-		result = prime * result + ((departId == null) ? 0 : departId.hashCode());
+		result = prime * result + ((arriveAirport == null) ? 0 : arriveAirport.hashCode());
+		result = prime * result + ((departAirport == null) ? 0 : departAirport.hashCode());
 		result = prime * result + ((departTime == null) ? 0 : departTime.hashCode());
 		return result;
 	}
@@ -135,15 +193,15 @@ public class Flight implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Flight other = (Flight) obj;
-		if (arriveId == null) {
-			if (other.arriveId != null)
+		if (arriveAirport == null) {
+			if (other.arriveAirport != null)
 				return false;
-		} else if (!arriveId.equals(other.arriveId))
+		} else if (!arriveAirport.equals(other.arriveAirport))
 			return false;
-		if (departId == null) {
-			if (other.departId != null)
+		if (departAirport == null) {
+			if (other.departAirport != null)
 				return false;
-		} else if (!departId.equals(other.departId))
+		} else if (!departAirport.equals(other.departAirport))
 			return false;
 		if (departTime == null) {
 			if (other.departTime != null)
