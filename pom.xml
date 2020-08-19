@@ -74,7 +74,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
-			<version>1.4.194</version> 
+			<version>1.4.194</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,6 +87,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>
+					org.sonarsource.scanner.maven
+				</groupId>
+				<artifactId>
+					sonar-maven-plugin
+				</artifactId>
+				<version>
+					3.7.0.1746
+				</version>
 			</plugin>
 		</plugins>
 	</build>
