@@ -26,6 +26,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.ss.training.utopia.counter.dao.AirportDao;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
+import com.ss.training.utopia.counter.dao.StripeDao;
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
@@ -46,6 +47,8 @@ public class BookingServiceTests {
 	private FlightDao flightDao;
 	@Mock
 	private BookingDao bookingDao;
+	@Mock
+	private StripeDao stripeDao;
 	@InjectMocks
 	private BookingService service;
 
@@ -83,11 +86,12 @@ public class BookingServiceTests {
 	public void bookFlightTest() throws StripeException {
 		final Long HOUR = 3_600_000l;
 		Long flightId = 6l, now = Instant.now().toEpochMilli();
-		String tokenId = "tok_visa";
+		String tokenId = "Mock Token ID", chargeId = "Mock Charge Id";
 		Timestamp future = new Timestamp(now + HOUR);
 		Booking booking = new Booking(4l, flightId, 3l, true, tokenId);
 		Flight flight = new Flight(2l, 8l, future, flightId, (short) 1, 150f);
 		when(flightDao.findByFlightId(flightId)).thenReturn(flight);
+		when(stripeDao.charge(tokenId, (long) (100 * flight.getPrice()))).thenReturn(chargeId);
 		assertTrue(service.bookFlight(booking));
 		assertNotEquals(tokenId, booking.getStripeId());
 		assertEquals((short) 0, flight.getSeatsAvailable());
