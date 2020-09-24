@@ -20,8 +20,8 @@ public class StripeDao {
 		Stripe.apiKey = Secrets.stripeKey;
 	}
 
-	public String charge(String token, long price) throws StripeException {
-		return Charge.create(ChargeCreateParams.builder().setAmount(price).setCurrency("usd").setSource(token).build())
+	public String charge(String tokenId, long price) throws StripeException {
+		return Charge.create(ChargeCreateParams.builder().setAmount(price).setCurrency("usd").setSource(tokenId).build())
 				.getId();
 	}
 
