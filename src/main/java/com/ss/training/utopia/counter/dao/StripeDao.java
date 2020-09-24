@@ -18,8 +18,8 @@ public class StripeDao {
 		Stripe.apiKey = Secrets.stripeKey;
 	}
 
-	public void refund(String stripeId) throws StripeException {
-		Refund.create(RefundCreateParams.builder().setCharge(stripeId).build());
+	public void refund(String chargeId) throws StripeException {
+		Refund.create(RefundCreateParams.builder().setCharge(chargeId).build());
 	}
 
 }
