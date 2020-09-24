@@ -23,13 +23,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
+import com.ss.training.utopia.counter.dao.StripeDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.BookingPk;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import com.stripe.param.ChargeCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -41,6 +40,8 @@ public class CancellationServiceTests {
 	private FlightDao flightDao;
 	@Mock
 	private BookingDao bookingDao;
+	@Mock
+	private StripeDao stripeDao;
 	@InjectMocks
 	private CancellationService service;
 
@@ -64,8 +65,7 @@ public class CancellationServiceTests {
 		Short initialSeatsAvailable = 0;
 		Long travelerId = 6l, flightId = 4l, now = Instant.now().toEpochMilli();
 		Float price = 150f;
-		String chargeId = Charge.create(ChargeCreateParams.builder().setAmount((long) (100 * price)).setCurrency("usd")
-				.setSource("tok_visa").build()).getId();
+		String chargeId = "Mock Charge ID";
 		Timestamp future = new Timestamp(now + HOUR);
 		Flight flight = new Flight(2l, 3l, future, flightId, initialSeatsAvailable, price);
 		Booking booking = new Booking(travelerId, flightId, 8l, true, chargeId);
