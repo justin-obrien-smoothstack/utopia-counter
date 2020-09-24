@@ -21,7 +21,8 @@ public class StripeDao {
 	}
 
 	public String charge(String tokenId, long price) throws StripeException {
-		return Charge.create(ChargeCreateParams.builder().setAmount(price).setCurrency("usd").setSource(tokenId).build())
+		return Charge
+				.create(ChargeCreateParams.builder().setAmount(price).setCurrency("usd").setSource(tokenId).build())
 				.getId();
 	}
 
