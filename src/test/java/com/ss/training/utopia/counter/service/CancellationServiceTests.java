@@ -20,14 +20,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
 import com.ss.training.utopia.counter.dao.StripeDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.BookingPk;
 import com.ss.training.utopia.counter.entity.Flight;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 
 /**
