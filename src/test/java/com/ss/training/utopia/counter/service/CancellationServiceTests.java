@@ -60,7 +60,6 @@ public class CancellationServiceTests {
 
 	@Test
 	public void cancelBookingTest() throws StripeException {
-		Stripe.apiKey = Secrets.stripeKey;
 		final Long HOUR = 3_600_000l;
 		Short initialSeatsAvailable = 0;
 		Long travelerId = 6l, flightId = 4l, now = Instant.now().toEpochMilli();
