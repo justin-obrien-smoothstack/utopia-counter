@@ -2,7 +2,6 @@ package com.ss.training.utopia.counter.dao;
 
 import org.springframework.stereotype.Component;
 
-import com.ss.training.utopia.counter.Secrets;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -17,7 +16,7 @@ import com.stripe.param.RefundCreateParams;
 public class StripeDao {
 
 	static {
-		Stripe.apiKey = Secrets.stripeKey;
+		Stripe.apiKey = System.getenv("STRIPE_KEY");
 	}
 
 	public String charge(String tokenId, long price) throws StripeException {
