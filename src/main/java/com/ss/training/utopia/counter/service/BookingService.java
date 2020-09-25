@@ -10,16 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ss.training.utopia.counter.Secrets;
 import com.ss.training.utopia.counter.dao.BookingDao;
 import com.ss.training.utopia.counter.dao.FlightDao;
+import com.ss.training.utopia.counter.dao.StripeDao;
 import com.ss.training.utopia.counter.dao.UserDao;
 import com.ss.training.utopia.counter.entity.Booking;
 import com.ss.training.utopia.counter.entity.Flight;
 import com.ss.training.utopia.counter.entity.User;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import com.stripe.model.Refund;
-import com.stripe.param.ChargeCreateParams;
-import com.stripe.param.RefundCreateParams;
 
 /**
  * @author Justin O'Brien
@@ -33,6 +30,8 @@ public class BookingService {
 	FlightDao flightDao;
 	@Autowired
 	BookingDao bookingDao;
+	@Autowired
+	StripeDao stripeDao;
 
 	public User createUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -57,14 +56,12 @@ public class BookingService {
 		if (flight.getSeatsAvailable() <= 0)
 			return false;
 		flight.setSeatsAvailable((short) (flight.getSeatsAvailable() - 1));
-		booking.setStripeId(
-				Charge.create(ChargeCreateParams.builder().setAmount((long) (100 * flight.getPrice()))
-						.setCurrency("usd").setSource(booking.getStripeId()).build()).getId());
+		booking.setStripeId(stripeDao.charge(booking.getStripeId(), (long) (100 * flight.getPrice())));
 		try {
 			bookingDao.save(booking);
 			flightDao.save(flight);
 		} catch (Throwable t) {
-			Refund.create(RefundCreateParams.builder().setCharge(booking.getStripeId()).build());
+			stripeDao.refund(booking.getStripeId());
 			throw t;
 		}
 		return true;
